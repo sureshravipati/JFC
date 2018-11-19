@@ -1,0 +1,7 @@
+
+pmapi/.settings/.jsdtscope
+*.prefs
+*.component
+pmapi/.settings/org.eclipse.wst.common.project.facet.core.xml
+pmapi/.settings/org.eclipse.wst.jsdt.ui.superType.container
+pmapi/.settings/org.eclipse.wst.jsdt.ui.superType.name
