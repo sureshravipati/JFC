@@ -5,13 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pmapi.constants.PMConstants;
 import com.pmapi.dao.UserDao;
 import com.pmapi.exception.PMException;
 import com.pmapi.to.UserTO;
 
 @Service
-public class UserrServiceImpl implements UserService, PMConstants {
+public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserDao userDao;	

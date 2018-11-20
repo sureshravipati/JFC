@@ -8,13 +8,7 @@ public interface PMConstants {
 	static String INVALID_ACTION_ERROR_CODE = "1001";
 	static String INVALID_ACTION_ERROR_MESSAGE = "Invalid action";
 	static int STATUS_400 = 400;	
-	static String ACTION_LIST = "ADD,EDIT,DELETE";
-	static String EMPTY  = "";	
-	static String ACTION_ADD  = "ADD";
-	static String ACTION_EDIT  = "EDIT";
-	static String ACTION_DELETE  = "DELETE";	
-	static String MM_DD_YYYY = "MM/dd/yyyy";	
-	static String STATUS_COMPLETED = "COMPLETED";
-	static String USER_DELETE_FAILED_MESSAGE = "User deletion failed";
+	static String YYYY_MM_DD = "yyyy-MM-dd";
+	static String COMPLETED="completed";
 	
 }

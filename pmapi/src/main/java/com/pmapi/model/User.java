@@ -2,15 +2,10 @@ package com.pmapi.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.ForeignKey;
 
 @Entity
 @Table(name="user")
@@ -35,14 +30,6 @@ public class User {
 	
 	@Column(name="task_id")
 	private int taskId;
-	
-	/*@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="project_id",insertable=false, updatable=false,nullable=true)	
-	private Project project;
-	
-	@ManyToOne(fetch=FetchType.LAZY)	
-	@JoinColumn(name="task_id",insertable=false, updatable=false,nullable=true)
-	private Task task;*/
 	
 	/**
 	 * @return the userId

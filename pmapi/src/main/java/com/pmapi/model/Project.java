@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,14 +16,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.ForeignKey;
-
 @Entity
 @Table(name="project")
 public class Project {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="project_id")
 	private int projectId;
 	
@@ -40,9 +39,12 @@ public class Project {
 	@Column(name="priority")
 	private int priority;
 	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy="project")
+	private Set<Task> task;
+	
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="project_id",insertable=false,updatable=false)
-	@ForeignKey(name="none")
+	@JoinColumn(name="project_id",insertable=false,updatable=false,
+			foreignKey=@ForeignKey(name="none"))
 	private Set<User> user;
 
 	/**
@@ -113,6 +115,20 @@ public class Project {
 	 */
 	public void setPriority(int priority) {
 		this.priority = priority;
+	}
+	
+	/**
+	 * @return the task
+	 */
+	public Set<Task> getTask() {
+		return task;
+	}
+
+	/**
+	 * @param task the task to set
+	 */
+	public void setTask(Set<Task> task) {
+		this.task = task;
 	}
 
 	/**

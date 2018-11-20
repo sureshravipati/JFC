@@ -78,7 +78,7 @@ public class UserDaoImpl implements UserDao, PMConstants {
 			tx.commit();
 			return "Success";
 		} catch(Exception e) {
-			logger.error("Exception occured in ProjectManagerDaoImpl searchUser : " + e);
+			logger.error("Exception occured in deleteUser : " + e);
 			throw new PMException(TECH_ERROR_CODE, TECH_ERROR_MESSAGE, STATUS_500);
 		} finally {
 			session.close();
@@ -104,7 +104,7 @@ public class UserDaoImpl implements UserDao, PMConstants {
 			tx.commit();
 			return "Success";
 		} catch(Exception e) {
-			logger.error("Exception occured in ProjectManagerDaoImpl modifyUser : " + e);
+			logger.error("Exception occured in saveUser : " + e);
 			throw new PMException(TECH_ERROR_CODE, TECH_ERROR_MESSAGE, STATUS_500);
 		} finally {
 			session.close();
