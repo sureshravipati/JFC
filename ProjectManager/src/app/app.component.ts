@@ -89,23 +89,18 @@ export class AppComponent implements OnInit {
     // Code for Project screen
 
     this.myProjectForm = this.fb.group({
-      Project_ID: 0,
-      Project_Name: ['', Validators.required],
+      projectId: 0,
+      project: ['', Validators.required],
       Priority_Project: [0, Validators.required],
-      Start_Date: ['', Validators.required],
-      End_Date: ['', Validators.required],
-      Employee_ID: [''],
-      Manager_Name: [''],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
       Project: [''],
-      Priority: 0,
-      Manager_ID: [''],
-      Status: 0,
-      TaskCount: 0,
-      Action: '',
-      Is_Active: 1,
-      ProjStatus: [''],
-      selectedManager: [{ disabled: true, value: '' }, Validators.required],
-      Active_Progress:['']
+      priority: 0,
+	  taskCount:0,
+	  taskCompleted:0,
+	  isActive:0,
+      managerId: [''],
+      selectedManager: [{ disabled: true, value: '' }, Validators.required]
     });
 
     // Code for Task screen
@@ -194,7 +189,7 @@ export class AppComponent implements OnInit {
   };
 
   getManagerDetails() {
-    this.appServices.getManagerDetails().subscribe(data => {
+    this.appServices.getUserDetails().subscribe(data => {
       this.managerDetails = data;
     });
 
@@ -211,20 +206,20 @@ export class AppComponent implements OnInit {
     this.projectSubmitted = true;
     var vMangerName = this.selectedManager;
     if (vMangerName == "") {
-      vMangerName = this.myProjectForm.value.Manager_ID;
+      vMangerName = this.myProjectForm.value.managerId;
     }
 
     if (this.myProjectForm.valid && vMangerName) {
       if (this.compareTwoDates(this.myProjectForm.value)) {
-        var VID = this.myProjectForm.value.Project_ID;
+        var VID = this.myProjectForm.value.projectId;
 
         var vProjForm = {
-          Project_ID: VID,
-          Project: this.myProjectForm.value.Project_Name,
-          Start_Date: this.myProjectForm.value.Start_Date,
-          End_Date: this.myProjectForm.value.End_Date,
-          Priority: this.myProjectForm.value.Priority_Project,
-          Manager_ID: vMangerName
+          projectId: VID,
+          project: this.myProjectForm.value.project,
+          startDate: this.myProjectForm.value.startDate,
+          endDate: this.myProjectForm.value.endDate,
+          priority: this.myProjectForm.value.Priority_Project,
+          managerId: vMangerName
         };
 
         this.appServices.submitProject(vProjForm).subscribe(data => {
@@ -252,15 +247,13 @@ export class AppComponent implements OnInit {
   };
 
   EditProject(proj) {
-    proj.Project_Name = proj.Project;
-    proj.Priority_Project = proj.Priority;
-    proj.Employee_ID = proj.Manager_ID;
-    proj.Manager_Name = '';
-    proj.selectedManager = proj.Manager_ID;
-    if (proj.Start_Date != null)
-      proj.Start_Date = proj.Start_Date.slice(0, -9);
-    if (proj.End_Date != null)
-      proj.End_Date = proj.End_Date.slice(0, -9);
+    proj.Project = proj.project;
+    proj.Priority_Project = proj.priority;
+    proj.selectedManager = proj.managerId;
+    if (proj.startDate != null)
+      proj.startDate = proj.startDate;
+    if (proj.endDate != null)
+      proj.endDate = proj.endDate;
     
       this.myProjectForm.setValue(proj);
   };

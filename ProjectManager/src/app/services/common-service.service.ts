@@ -30,10 +30,6 @@ export class CommonServiceService {
     return this.http.get(vURL + "/Project/GetProjectDetails");
   }
 
-  getManagerDetails() {
-    return this.http.get(vURL + "/Project/GetManagerDetails");
-  }
-
   getProjectName() {
     return this.http.get(vURL + "/Project/GetProjectName");
   }
