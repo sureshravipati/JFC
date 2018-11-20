@@ -7,7 +7,7 @@ export class FilterPipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
     if (args.UserNameSearch) {
-      value = value.filter(user => user.First_Name.toLowerCase().indexOf(args.UserNameSearch.toLowerCase()) != -1 || (user.Last_Name.toLowerCase().indexOf(args.UserNameSearch.toLowerCase()) != -1));
+      value = value.filter(user => user.firstName.toLowerCase().indexOf(args.UserNameSearch.toLowerCase()) != -1 || (user.lastName.toLowerCase().indexOf(args.UserNameSearch.toLowerCase()) != -1));
     }
 
     if (args.ProjectSearch) {
@@ -35,7 +35,7 @@ export class FilterPipe implements PipeTransform {
     }
 
     if (args.radioUserTaskSearch) {
-      value = value.filter(user => user.First_Name.toLowerCase().indexOf(args.radioUserTaskSearch.toLowerCase()) != -1 || (user.Last_Name.toLowerCase().indexOf(args.radioUserTaskSearch.toLowerCase()) != -1));
+      value = value.filter(user => user.firstName.toLowerCase().indexOf(args.radioUserTaskSearch.toLowerCase()) != -1 || (user.lastName.toLowerCase().indexOf(args.radioUserTaskSearch.toLowerCase()) != -1));
     }
 
     return value;

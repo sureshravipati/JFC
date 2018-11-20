@@ -2,8 +2,7 @@ import { Component, NgModule, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
-//var vURL = "http://localhost:8050/";
- var vURL = "http://localhost:10326/";
+var vURL = "http://localhost:8080";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -22,57 +21,57 @@ export class CommonServiceService {
 
   // Common Code
   getParentTask() {
-    return this.http.get(vURL + "api/TaskManager/GetParentTaskList");
+    return this.http.get(vURL + "/TaskManager/GetParentTaskList");
   }
 
   // Code for Project screen
 
   getProjectDetails() {
-    return this.http.get(vURL + "api/Project/GetProjectDetails");
+    return this.http.get(vURL + "/Project/GetProjectDetails");
   }
 
   getManagerDetails() {
-    return this.http.get(vURL + "api/Project/GetManagerDetails");
+    return this.http.get(vURL + "/Project/GetManagerDetails");
   }
 
   getProjectName() {
-    return this.http.get(vURL + "api/Project/GetProjectName");
+    return this.http.get(vURL + "/Project/GetProjectName");
   }
 
   submitProject(project) {
-    return this.http.post(vURL + "api/Project/SubmitProjectDetail", project, httpOptions);
+    return this.http.post(vURL + "/Project/SubmitProjectDetail", project, httpOptions);
   }
 
   SuspendProject(project) {
-    return this.http.post(vURL + "api/Project/SuspendProjectDetail", project, httpOptions);
+    return this.http.post(vURL + "/Project/SuspendProjectDetail", project, httpOptions);
   }
   // Code for Task screen
 
   getTaskManager() {
-    return this.http.get(vURL + "api/TaskManager/GetTaskDetailList");
+    return this.http.get(vURL + "/TaskManager/GetTaskDetailList");
   }
 
   submitTask(task) {
-    return this.http.post(vURL + "api/TaskManager/SubmitTaskDetail", task, httpOptions);
+    return this.http.post(vURL + "/TaskManager/SubmitTaskDetail", task, httpOptions);
   }
 
   updateEndTask(task) {
-    return this.http.post(vURL + "api/TaskManager/UpdateEndTask", task);
+    return this.http.post(vURL + "/TaskManager/UpdateEndTask", task);
   }
 
   // Code for User screen 
 
 
   getUserDetails() {
-    return this.http.get(vURL + "api/User/GetUserDetails");
+    return this.http.get(vURL + "/User/GetUserDetails");
   }
 
   submitUser(user) {
-    return this.http.post(vURL + "api/User/SubmitUserDetail", user, httpOptions);
+    return this.http.post(vURL + "/User/SubmitUserDetail", user, httpOptions);
   }
 
   deleteUser(user) {
-    return this.http.post(vURL + "api/User/DeleteUserDetail", user, httpOptions);
+    return this.http.post(vURL + "/User/DeleteUserDetail", user, httpOptions);
   }
 
 

@@ -273,8 +273,8 @@
 										<div class="col-sm-6 col-sm-offset-3">
 											<div class="form-group ">
 												<label for="task">First Name:</label>
-												<input type="hidden" class="form-control" id="First_Name" name="First_Name" formControlName="First_Name">
-												<input type="text" class="form-control" id="First_Name" name="First_Name" formControlName="First_Name">
+												<input type="hidden" class="form-control" id="firstName" name="firstName" formControlName="firstName">
+												<input type="text" class="form-control" id="firstName" name="firstName" formControlName="firstName">
 												<div class="clearfix"></div>
 											</div>
 										</div>
@@ -285,8 +285,8 @@
 										<div class="col-sm-6 col-sm-offset-3">
 											<div class="form-group ">
 												<label for="task">Last Name:</label>
-												<input type="hidden" class="form-control" id="Last_Name" name="Last_Name" formControlName="Last_Name">
-												<input type="text" class="form-control" id="Last_Name" name="Last_Name" formControlName="Last_Name">
+												<input type="hidden" class="form-control" id="lastName" name="lastName" formControlName="lastName">
+												<input type="text" class="form-control" id="lastName" name="lastName" formControlName="lastName">
 												<div class="clearfix"></div>
 											</div>
 										</div>
@@ -297,8 +297,8 @@
 										<div class="col-sm-6 col-sm-offset-3">
 											<div class="form-group ">
 												<label for="task">Employee ID:</label>
-												<input type="hidden" class="form-control" id="Employee_ID" name="Employee_ID" formControlName="Employee_ID" ng-disabled="isUserUpdate">
-												<input type="text" class="form-control" id="Employee_ID" name="Employee_ID" formControlName="Employee_ID" ng-disabled="isUserUpdate"
+												<input type="hidden" class="form-control" id="employeeId" name="employeeId" formControlName="employeeId" ng-disabled="isUserUpdate">
+												<input type="text" class="form-control" id="employeeId" name="employeeId" formControlName="employeeId" ng-disabled="isUserUpdate"
 												 onkeydown="return (!(event.keyCode>=65) && event.keyCode!=32);">
 												<div class="clearfix"></div>
 											</div>
@@ -323,18 +323,18 @@
 
 					<div class="adduser-cont" *ngIf="userShow">
 						<div class="row adduser-heading">
-							<div class="col-sm-7 padding-0">
+							<div class="col-sm-5 padding-0">
 								<div class="form-group ">
 									<input type="hidden" class="form-control" id="Search_By" name="Search_By">
 									<input type="text" class="form-control" id="Search_By" [(ngModel)]="search.userSearch" name="userSearch">
 									<div class="clearfix"></div>
 								</div>
 							</div>
-							<div class="col-sm-5 form-group form-btns">
+							<div class="col-sm-7 form-group form-btns">
 								<label for=""> Sort:</label>
-								<button class="btn btn-primary" (click)="sortUser('First_Name')">First Name</button>
-								<button class="btn btn-primary" (click)="sortUser('Last_Name')">Last Name</button>
-								<button class="btn btn-primary" (click)="sortUser('Employee_ID')">ID</button>
+								<button class="btn btn-primary" (click)="sortUser('firstName')">First Name</button>
+								<button class="btn btn-primary" (click)="sortUser('lastName')">Last Name</button>
+								<button class="btn btn-primary" (click)="sortUser('employeeId')">ID</button>
 							</div>
 							<div class="clearfix"></div>
 						</div>
@@ -342,21 +342,21 @@
 						<div class="listView">
 							<div class="row" *ngFor="let user of userDetails | filter : { UserNameSearch : search.userSearch}">
 								<div class="col-sm-10 padding-0">
-									<div>{{user.First_Name}}</div>
+									<div>{{user.firstName}}</div>
 								</div>
 								<div class="col-sm-2 form-group form-btns">
 									<button class="btn btn-primary" (click)="EditUser(user)">Edit</button>
 								</div>
 								<div class="clearfix"></div>
 								<div class="col-sm-10 padding-0">
-									<div>{{user.Last_Name}}</div>
+									<div>{{user.lastName}}</div>
 								</div>
 								<div class="col-sm-2 form-group form-btns">
 									<button class="btn btn-primary" (click)="DeleteUser(user)">Delete</button>
 								</div>
 								<div class="clearfix"></div>
 								<div class="col-sm-10 padding-0">
-									<div>{{user.Employee_ID}}</div>
+									<div>{{user.employeeId}}</div>
 								</div>
 								<div class="clearfix"></div>
 							</div>
@@ -565,7 +565,7 @@
 						<input type="text" class="form-control" id="searchUserSearch" [(ngModel)]="search.radioUserSearch" name="radioUserSearch">
 					</div>
 				<div class="modal-body" *ngFor="let user of userDetails | filter : { radioUserTaskSearch : search.radioUserSearch}">
-					<label class="modContainer">{{user.First_Name}}, {{user.Last_Name}}
+					<label class="modContainer">{{user.firstName}}, {{user.lastName}}
 						<input type="radio" name="radio4" [(ngModel)]="selectedUser" [id]="'user_'+i" [value]="user.User_ID">
 						<span class="checkmark"></span>
 					</label>

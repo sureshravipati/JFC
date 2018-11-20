@@ -135,12 +135,12 @@ export class AppComponent implements OnInit {
     // Code for User screen  
 
     this.addUserForm = this.fb.group({
-      First_Name: ['', Validators.required],
-      Last_Name: ['', Validators.required],
-      User_ID: 0,
-      Employee_ID: ['', Validators.required],
-      Project_ID: '',
-      Task_ID: ''
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      userId: 0,
+      employeeId: ['', Validators.required],
+      projectId: '',
+      taskId: ''
     });
 
     this.viewTaskForm = this.fb.group({
@@ -407,7 +407,7 @@ export class AppComponent implements OnInit {
   AddUserSubmit() {
     this.addUserSubmitted = true;
     if (this.addUserForm.valid) {
-      var VID = this.addUserForm.value.User_ID;
+      var VID = this.addUserForm.value.userId;
       this.appServices.submitUser(this.addUserForm.value).subscribe(data => {
         if (data) {
           Swal('Success', `Data ${VID == 0 ? 'Added' : 'Updated'} successfully...`, 'success');
