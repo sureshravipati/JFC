@@ -150,7 +150,7 @@
 											<div class="form-group">
 												<label for="task">Project:</label>
 												<input type="text" class="form-control manager-name" id="Project_Name" name="Project_Name" formControlName="selectedProject">
-												<button type="button" class="btn btn-primary" (click)="ProjectSearch()" [disabled]="isTaskUpdate">Search</button>
+												<button type="button" class="btn btn-primary" (click)="ProjectSearch()" [disabled]="isTaskUpdate||parentCheck">Search</button>
 												<div class="clearfix"></div>
 											</div>
 										</div>
@@ -190,7 +190,7 @@
 												<div class="form-slider">
 													<b>0</b>
 													<input type="range" min="0" max="30" class="slider" step="1" value="0" id="rangeIn"
-													 name="Priority" formControlName="Priority">
+													 name="Priority" formControlName="Priority" [attr.disabled]="parentCheck? '': null">
 													<b>30</b>
 													
 												</div>
@@ -206,7 +206,7 @@
 											<div class="form-group ">
 												<label for="task">Parent Task:</label>
 												<input type="text" class="form-control manager-name" id="Parent_Task" name="Parent_Task" formControlName="selectedParentTask">
-												<button type="button" class="btn btn-primary" (click)="ParentSearch()" [disabled]="!filter">Search</button>
+												<button type="button" class="btn btn-primary" (click)="ParentSearch()" [disabled]="parentCheck">Search</button>
 												<div class="clearfix"></div>
 											</div>
 										</div>
@@ -220,7 +220,7 @@
 											<div class="form-group">
 												<label for="task">Start date:</label>
 												<div class="input-group date">
-													<input type="date" class="datepicker form-control" name="Start_Date" formControlName="Start_Date">
+													<input type="date" class="datepicker form-control" name="Start_Date" formControlName="Start_Date" [attr.disabled]="parentCheck? '': null">
 												</div>
 
 												<div class="clearfix"></div>
@@ -234,7 +234,7 @@
 											<div class="form-group">
 												<label for="task">End date:</label>
 												<div class="input-group date">
-													<input type="date" class="datepicker form-control" name="End_Date" formControlName="End_Date">
+													<input type="date" class="datepicker form-control" name="End_Date" formControlName="End_Date" [attr.disabled]="parentCheck? '': null">
 												</div>
 												<div class="clearfix"></div>
 											</div>
@@ -247,7 +247,7 @@
 											<div class="form-group ">
 												<label for="task">User:</label>
 												<input type="text" class="form-control manager-name" id="User_Name" name="User_Name" formControlName="selectedUser">
-												<button type="button" class="btn btn-primary" (click)="UserSearch()">Search</button>
+												<button type="button" class="btn btn-primary" (click)="UserSearch()" [disabled]="parentCheck">Search</button>
 												<div class="clearfix"></div>
 											</div>
 										</div>
@@ -512,8 +512,8 @@
 				</div>
 
 				<div class="modal-body" *ngFor="let proj of projectNameList| filter : { radioTaskProjectSearch : search.radioTaskProjSearch}">
-					<label class="modContainer">{{proj.Project}}
-						<input  type="radio" name="radio2" [(ngModel)]="selectedProject" [id]="'proj_' +i" [value]="proj.Project_ID">
+					<label class="modContainer">{{proj.project}}
+						<input  type="radio" name="radio2" [(ngModel)]="selectedProject" [id]="'proj_' +i" [value]="proj.projectId">
 						<span class="checkmark"></span>
 					</label>
 				</div>

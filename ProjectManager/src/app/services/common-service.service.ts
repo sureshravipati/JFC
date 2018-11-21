@@ -30,10 +30,6 @@ export class CommonServiceService {
     return this.http.get(vURL + "/Project/GetProjectDetails");
   }
 
-  getProjectName() {
-    return this.http.get(vURL + "/Project/GetProjectName");
-  }
-
   submitProject(project) {
     return this.http.post(vURL + "/Project/SubmitProjectDetail", project, httpOptions);
   }

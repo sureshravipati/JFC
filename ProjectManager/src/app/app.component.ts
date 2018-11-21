@@ -64,6 +64,7 @@ export class AppComponent implements OnInit {
   orderBy: boolean = false;
   isUserUpdate: boolean = false;
   filter = false;
+  parentCheck = false;
   Start_Date = new Date();
   selectedManager: string = '';
   selectedManagerId: string = '';
@@ -114,7 +115,7 @@ export class AppComponent implements OnInit {
       Priority: [0, Validators.required],
       Parent_ID: [''],
       Parent_Task: [''],
-      Start_Date: ['', Validators.required],
+      Start_Date: [''],
       End_Date: [''],
       Is_Active: 0,
       IsActive: 0,
@@ -200,7 +201,7 @@ export class AppComponent implements OnInit {
   };
 
   getProjectName() {
-    this.appServices.getProjectName().subscribe(data => {
+    this.appServices.getProjectDetails().subscribe(data => {
       this.projectNameList = data;
     });
   };
@@ -310,45 +311,73 @@ export class AppComponent implements OnInit {
     var vUserName = this.selectedUser;
     if (vUserName == "")
       vUserName = this.myForm.value.User_ID;
+  
+	if(this.parentCheck){
+		var parentTask=this.myForm.value.Task;
+		if(parentTask != ""&&null !=parentTask){
+			var vParentTaskForm = {
+			  taskId: VID,
+			  task: this.myForm.value.Task,
+			  parent:this.parentCheck			  
+			};
+			
+			this.appServices.submitTask(vParentTaskForm).subscribe(data => {
+			  if (data) {
+				Swal('success', `Data ${VID == 0 ? 'Added' : 'Updated'} successfully...`, 'success');
+				this.myForm.reset();
+				this.submitted = false;
+				this.callAllMethods();
+				this.isTaskUpdate = false;
+				this.filter = true;
+			  }
+			  else {
+				Swal('Failed', 'Please try again..', 'error');
+			  }
+			});
+		}else{
+			Swal('Failed', 'Task is mandatory', 'error');
+		}
+		
+	}else{	
+		if (this.myForm.valid && vProjName != "" && vParentTask != "" && vUserName != "") {
+		  if (this.compareTwoDates(this.myForm.value)) {
 
-    if (this.myForm.valid && vProjName != "" && vParentTask != "" && vUserName != "") {
-      if (this.compareTwoDates(this.myForm.value)) {
-
-        var vTaskForm = {
-          Task_ID: VID,
-          Parent_ID: vParentTask,
-          Task: this.myForm.value.Task,
-          Start_Date: this.myForm.value.Start_Date,
-          End_Date: this.myForm.value.End_Date,
-          Priority: this.myForm.value.Priority,
-          Project_ID: vProjName,
-          User_ID: vUserName
-        };
+			var vTaskForm = {
+			  Task_ID: VID,
+			  Parent_ID: vParentTask,
+			  Task: this.myForm.value.Task,
+			  Start_Date: this.myForm.value.Start_Date,
+			  End_Date: this.myForm.value.End_Date,
+			  Priority: this.myForm.value.Priority,
+			  Project_ID: vProjName,
+			  User_ID: vUserName
+			};
 
 
-        this.appServices.submitTask(vTaskForm).subscribe(data => {
-          if (data) {
-            Swal('success', `Data ${VID == 0 ? 'Added' : 'Updated'} successfully...`, 'success');
-            this.myForm.reset();
-            this.submitted = false;
-            this.callAllMethods();
-            this.isTaskUpdate = false;
-            this.filter = true;
-          }
-          else {
-            Swal('Failed', 'Please try again..', 'error');
-          }
-        });
-      }
-      else {
-        Swal('Failed', 'End Date should be greater than Start Date', 'error');
+			this.appServices.submitTask(vTaskForm).subscribe(data => {
+			  if (data) {
+				Swal('success', `Data ${VID == 0 ? 'Added' : 'Updated'} successfully...`, 'success');
+				this.myForm.reset();
+				this.submitted = false;
+				this.callAllMethods();
+				this.isTaskUpdate = false;
+				this.filter = true;
+			  }
+			  else {
+				Swal('Failed', 'Please try again..', 'error');
+			  }
+			});
+		  }
+		  else {
+			Swal('Failed', 'End Date should be greater than Start Date', 'error');
 
-      }
-    }
-    else {
-      Swal('Failed', 'All fields are mandatory.', 'error');
+		  }
+		}	
+		else {
+		  Swal('Failed', 'All fields are mandatory.', 'error');
 
-    }
+		}
+	}
   };
 
 
@@ -544,9 +573,7 @@ export class AppComponent implements OnInit {
   };
 
   onParentCheck() {
-    this.filter = !this.filter;
-    if (!this.filter) {
-    }
+	this.parentCheck=!this.parentCheck;
   };
 
 
