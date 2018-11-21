@@ -68,6 +68,7 @@
 											<div class="form-group ">
 												<label for="task">Manager:</label>
 												<input type="text" class="form-control manager-name" id="Manager_Name" name="selectedManager" formControlName="selectedManager">
+												<input type="hidden" class="form-control manager-name" id="Manager_Name_id" name="selectedManagerId" formControlName="selectedManagerId">
 												<button type="button" class="btn btn-primary" (click)="ManagerSearch()">Search</button>
 												<div class="clearfix"></div>
 											</div>
@@ -485,7 +486,7 @@
 
 				<div class="modal-body" *ngFor="let manager of managerDetails | filter : { radioManagerSearch : search.radioMgrSearch}">
 					<label class="modContainer">{{manager.firstName}}, {{manager.lastName}}
-						<input type="radio" name="radio" [(ngModel)]="selectedManager" [value]="manager.userId" />
+						<input type="radio" name="radio" (click)="selectedManagerClick(manager.firstName +','+manager.lastName)" [(ngModel)]="selectedManagerId" [value]="manager.userId" />
 						<span class="checkmark"></span>
 					</label>					
 				</div>

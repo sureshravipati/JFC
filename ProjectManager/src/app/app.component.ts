@@ -66,6 +66,7 @@ export class AppComponent implements OnInit {
   filter = false;
   Start_Date = new Date();
   selectedManager: string = '';
+  selectedManagerId: string = '';
   selectedProject: string = '';
   selectedParentTask: string = '';
   selectedUser: string = '';
@@ -100,7 +101,9 @@ export class AppComponent implements OnInit {
 	  taskCompleted:0,
 	  isActive:0,
       managerId: [''],
-      selectedManager: [{ disabled: true, value: '' }, Validators.required]
+	  managerName:[''],
+      selectedManager: [{ disabled: true, value: '' }, Validators.required],
+	  selectedManagerId:0
     });
 
     // Code for Task screen
@@ -146,6 +149,7 @@ export class AppComponent implements OnInit {
     $('.modal').on('hidden.bs.modal', (e) => {
       if (e.target.id == 'managerModal') {
         this.myProjectForm.get('selectedManager').setValue(this.selectedManager);
+		this.myProjectForm.get('selectedManagerId').setValue(this.selectedManagerId);
       };
       if (e.target.id == 'projNameModal') {
         this.myForm.get('selectedProject').setValue(this.selectedProject);
@@ -204,7 +208,7 @@ export class AppComponent implements OnInit {
 
   onProjectSubmit() {
     this.projectSubmitted = true;
-    var vMangerName = this.selectedManager;
+    var vMangerName = this.selectedManagerId;
     if (vMangerName == "") {
       vMangerName = this.myProjectForm.value.managerId;
     }
@@ -249,7 +253,8 @@ export class AppComponent implements OnInit {
   EditProject(proj) {
     proj.Project = proj.project;
     proj.Priority_Project = proj.priority;
-    proj.selectedManager = proj.managerId;
+    proj.selectedManagerId = proj.managerId;
+	proj.selectedManager = proj.managerName;
     if (proj.startDate != null)
       proj.startDate = proj.startDate;
     if (proj.endDate != null)
@@ -499,7 +504,8 @@ export class AppComponent implements OnInit {
   };
 
   ManagerSearch() {
-    this.selectedManager = this.myProjectForm.get('selectedManager').value;
+    this.selectedManagerId = this.myProjectForm.get('selectedManagerId').value;
+	this.selectedManager = this.myProjectForm.get('selectedManager').value;
     $("#managerModal").modal();
 
   };
@@ -555,4 +561,8 @@ export class AppComponent implements OnInit {
   sortTask(taskkey) {
     this.pagedItems = this.orderPipe.transform(this.pagedItems, taskkey);
   };
+  
+  selectedManagerClick(managerName){
+	  this.selectedManager=managerName;
+  }
 }

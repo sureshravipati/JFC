@@ -12,6 +12,7 @@ public class ProjectTO implements Serializable{
 	private int taskCount;
 	private int taskCompleted;
 	private int managerId;
+	private String managerName;
 	private int IsActive;
 	/**
 	 * @return the projectId
@@ -120,6 +121,18 @@ public class ProjectTO implements Serializable{
 	 */
 	public void setTaskCompleted(int taskCompleted) {
 		this.taskCompleted = taskCompleted;
+	}
+	/**
+	 * @return the managerName
+	 */
+	public String getManagerName() {
+		return managerName;
+	}
+	/**
+	 * @param managerName the managerName to set
+	 */
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
 	}
 	
 	}

@@ -64,6 +64,7 @@ public class ProjectDaoImpl implements ProjectDao, PMConstants {
 	        		if(null!=useSet&&!useSet.isEmpty()) {
 	        			for(User user:useSet) {
 	        			 projectTO.setManagerId(user.getUserId());
+	        			 projectTO.setManagerName(user.getFname()+","+user.getLname());
 	        			}
 	        		}
 	        		tasks=project.getTask();
@@ -106,20 +107,10 @@ public class ProjectDaoImpl implements ProjectDao, PMConstants {
 			project.setPriority(projectTO.getPriority());
 			project.setStartDate(formatter.parse(projectTO.getStartDate()));
 			project.setEndDate(formatter.parse(projectTO.getEndDate()));	
-			user=session.get(User.class, projectTO.getManagerId());
 			project=(Project) session.merge(project);
-			
-			useSet=project.getUser();
-    		if(null!=useSet&&!useSet.isEmpty()) {
-    			for(User userObj:useSet) {
-    				userObj.setProjectId(0);
-    				session.merge(userObj);
-    			}
-    		}
-			
-			user.setProjectId(project.getProjectId());
-			session.merge(user);
+			session.flush();
 			tx.commit();
+			this.updateUser(project.getProjectId(),projectTO.getManagerId());
 			return "Success";
 		} catch(Exception ex) {
 			logger.error("Exception occured in saveProject : " + ex);
@@ -142,6 +133,34 @@ public class ProjectDaoImpl implements ProjectDao, PMConstants {
 			return "Success";
 		} catch(Exception ex) {
 			logger.error("Exception occured in suspendProject : " + ex);
+			throw new PMException(TECH_ERROR_CODE, TECH_ERROR_MESSAGE, STATUS_500);
+		} finally {
+			session.close();
+		}
+	}
+	
+	private void updateUser(int projectId,int userId)throws PMException {	
+		Session session = null;
+		Transaction tx = null;
+		Set<User> useSet;
+		User user=null;
+		try {
+			session = sessionFactory.openSession();		
+			tx = session.beginTransaction();
+			Project project= session.get(Project.class, projectId);
+			useSet=project.getUser();
+    		if(null!=useSet&&!useSet.isEmpty()) {
+    			for(User userObj:useSet) {
+    				userObj.setProjectId(0);
+    				session.merge(userObj);
+    			}
+    		}
+    		user=session.get(User.class, userId);
+    		user.setProjectId(project.getProjectId());
+			session.merge(user);
+			tx.commit();
+		} catch(Exception ex) {
+			logger.error("Exception occured in updateUser : " + ex);
 			throw new PMException(TECH_ERROR_CODE, TECH_ERROR_MESSAGE, STATUS_500);
 		} finally {
 			session.close();
