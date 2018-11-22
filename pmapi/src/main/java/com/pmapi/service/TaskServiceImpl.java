@@ -30,8 +30,13 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public List<TaskTO> getAllTasks() throws PMException {
-		return taskDao.getAllTasks();
+	public List<TaskTO> getAllTasks(int projectId) throws PMException {
+		return taskDao.getAllTasks(projectId);
+	}
+
+	@Override
+	public String endTask(int taskId) throws PMException {		
+		return taskDao.endTask(taskId);
 	}	
 
 }

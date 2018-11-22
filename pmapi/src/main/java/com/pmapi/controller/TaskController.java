@@ -50,15 +50,28 @@ public class TaskController implements PMConstants {
 		return list;
 	}
 	
-	@GetMapping(value="/GetTaskDetailList")
-	public List<TaskTO> getTaskDetailList() throws PMException {		
+	@PostMapping(value="/GetTaskDetailList")
+	public List<TaskTO> getTaskDetailList(@RequestBody TaskTO taskTO) throws PMException {		
 		List<TaskTO> list=null;
 		try {
-			list= taskService.getAllTasks();
+			list= taskService.getAllTasks(taskTO.getProjectId());
 		} catch(PMException ex) {
 			logger.error("Exception occured in getParentTaskList : "+ ex);
 			throw new PMException(ex.getErrorCode(), ex.getErrorMessage(), ex.getStatus());
 		}
 		return list;	
+	}
+	
+	@PostMapping(value = "/UpdateEndTask")
+	public boolean UpdateEndTask(@RequestBody TaskTO taskTO) throws PMException {	
+		String status;
+		try {
+			status = taskService.endTask(taskTO.getTaskId());
+			if("Success".contentEquals(status)) return true;
+		} catch(PMException ex) {
+			logger.error("Exception occured in UpdateEndTask : "+ ex);
+			throw new PMException(ex.getErrorCode(), ex.getErrorMessage(), ex.getStatus());
+		}
+		return false;
 	}
 }

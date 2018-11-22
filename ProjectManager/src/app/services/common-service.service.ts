@@ -39,8 +39,8 @@ export class CommonServiceService {
   }
   // Code for Task screen
 
-  getTaskManager() {
-    return this.http.get(vURL + "/TaskManager/GetTaskDetailList");
+  getTaskManager(project) {
+    return this.http.post(vURL + "/TaskManager/GetTaskDetailList",project, httpOptions);
   }
 
   submitTask(task) {

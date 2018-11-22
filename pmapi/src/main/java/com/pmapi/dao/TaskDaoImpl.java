@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,16 +143,21 @@ public class TaskDaoImpl implements TaskDao, PMConstants {
 		return taskToList;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<TaskTO> getAllTasks() throws PMException {		
+	public List<TaskTO> getAllTasks(int ProjectId) throws PMException {		
 		List<TaskTO> taskToList = null;
+		List<Task> taskList;
 		Session session = null;
 		ParentTask parentTask;
 		Project project;
+		Criteria criteria;
+		Set<User> useSet;
 		try {
 			session = sessionFactory.openSession();
-	        @SuppressWarnings("unchecked")
-			List<Task> taskList = session.createCriteria(Task.class).list();
+			criteria=session.createCriteria(Task.class);
+			criteria.add(Restrictions.eq("project.projectId", ProjectId));
+			taskList= criteria.list();
 	        if(null != taskList && !taskList.isEmpty()) {
 	        	taskToList = new ArrayList<TaskTO>();	        	
 	        	for(Task task : taskList) {
@@ -158,15 +165,27 @@ public class TaskDaoImpl implements TaskDao, PMConstants {
 	        		taskTO.setTaskId(task.getTaskId());
 	        		taskTO.setTask(task.getTask());
 	        		parentTask=task.getParentTask();
-	        		taskTO.setParentId(parentTask.getParentId());
-	        		taskTO.setParentTask(parentTask.getParentTask());
+	        		if(null!=parentTask) {
+	        			taskTO.setParentId(parentTask.getParentId());
+	        			taskTO.setParentTask(parentTask.getParentTask());
+	        		}
 	        		project=task.getProject();
-	        		taskTO.setProjectId(project.getProjectId());
-	        		taskTO.setProjectName(project.getProject());
+	        		if(null!=project) {
+	        			taskTO.setProjectId(project.getProjectId());
+	        			taskTO.setProjectName(project.getProject());
+	        		}
 	        		taskTO.setStartDate(task.getStartDate().toString());
 	        		taskTO.setEndDate(task.getEndDate().toString());
 	        		taskTO.setPriority(task.getPriority());
 	        		taskTO.setStatus(task.getStatus());
+	        		useSet=task.getUser();
+	        		if(null!=useSet&&!useSet.isEmpty()) {
+	        			for(User user:useSet) {
+	        				taskTO.setUserId(user.getUserId());
+	        				taskTO.setUserName(user.getFname()+","+user.getLname());
+	        			}
+	        		}
+	        		
 	        		taskToList.add(taskTO);
 	        	}
 	        }			
@@ -177,5 +196,26 @@ public class TaskDaoImpl implements TaskDao, PMConstants {
 			session.close();
 		}
 		return taskToList;
+	}
+
+	@Override
+	public String endTask(int taskId) throws PMException {
+		Session session = null;
+		Transaction tx = null;
+		Task task;
+		try {
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();	
+			task=session.load(Task.class, taskId);
+			task.setStatus("1");
+			session.saveOrUpdate(task);
+			tx.commit();
+			return "Success";
+		} catch(Exception ex) {
+			logger.error("Exception occured in saveParentTask : " + ex);
+			throw new PMException(TECH_ERROR_CODE, TECH_ERROR_MESSAGE, STATUS_500);
+		} finally {
+			session.close();
+		}	
 	}
 }

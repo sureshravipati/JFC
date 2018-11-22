@@ -16,6 +16,7 @@ public class TaskTO implements Serializable{
 	private String status;
 	private boolean isParent;
 	private int userId;
+	private String userName;
 	/**
 	 * @return the taskId
 	 */
@@ -159,5 +160,17 @@ public class TaskTO implements Serializable{
 	 */
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+	/**
+	 * @return the userName
+	 */
+	public String getUserName() {
+		return userName;
+	}
+	/**
+	 * @param userName the userName to set
+	 */
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}	
 }

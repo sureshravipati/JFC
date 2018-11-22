@@ -11,6 +11,8 @@ public interface TaskService {
 
 	public List<TaskTO> getParentTasks() throws PMException;
 
-	public List<TaskTO> getAllTasks() throws PMException;
+	public List<TaskTO> getAllTasks(int projectId) throws PMException;
+
+	public String endTask(int taskId) throws PMException;;
 	
 }

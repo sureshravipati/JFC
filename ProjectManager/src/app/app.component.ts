@@ -75,6 +75,7 @@ export class AppComponent implements OnInit {
   selectedUser: string = '';
   selectedUserId: string = '';
   searchedProject: string = '';
+  searchedProjectId: string = '';
   isTaskUpdate: boolean = false;
 
   public ngAfterContentInit() {
@@ -122,6 +123,8 @@ export class AppComponent implements OnInit {
       endDate: [''],
       projectId: 0,
       status: 0,
+	  parent:'',
+	  userName:'',
       userId: [''],
       selectedProject: [{ disabled: true, value: '' }, Validators.required],
 	  selectedProjectId:'',
@@ -168,7 +171,7 @@ export class AppComponent implements OnInit {
 		this.myForm.get('selectedUserId').setValue(this.selectedUserId);
       };
       if (e.target.id == 'taskProjectModal') {
-        this.viewTaskForm.get('searchedProject').setValue(this.searchedProject);
+        this.viewTaskForm.get('searchedProject').setValue(this.searchedProject);		
       };
     })
 
@@ -178,9 +181,9 @@ export class AppComponent implements OnInit {
 
   callAllMethods() {
     this.getProjectName();
-    this.getProjectDetails();
-    this.getTaskManager();
+    this.getProjectDetails();   
     this.getUserDetails();
+	this.getProjectTasks({projectId:this.searchedProjectId});
     this.getManagerDetails();
     this.getParentDetails();
   };
@@ -291,17 +294,23 @@ export class AppComponent implements OnInit {
   }
 
 
-  // Code for Task screen
-
-  getTaskManager() {
-
-    this.appServices.getTaskManager().subscribe(data => {
-
-      this.taskDetails = data;
-
-      this.setPage(1);
-    });
-  };
+  // Code for Task screen  
+  
+  getProjectTasks(project){
+	 
+	 this.searchedProjectId = project.projectId; 
+	 
+	 this.appServices.getTaskManager(project).subscribe(data => {
+		 
+		  this.taskDetails = data;
+		  
+		  if(this.taskDetails!=null&&this.taskDetails!=''){
+			
+			this.setPage(1);
+		  
+		  }
+		});
+  };	 
 
   onSubmit() {
     this.submitted = true;
@@ -399,23 +408,25 @@ export class AppComponent implements OnInit {
 
     this.isTaskUpdate = true;
     this.filter = false;
-
-    task.IsActive = 0;
-    task.selectedProject = task.Project_ID;
-    task.selectedParentTask = task.Parent_ID;
-    task.selectedUser = task.User_ID;
-    task.Parent_Task = task.Parent_Task;
+    
+    task.selectedProject = task.projectName;
+    task.selectedParentTask = task.parentTask;
+	task.selectedProjectId = task.projectId;
+	task.selectedParentTaskId= task.parentId;
+    task.selectedUser = task.userName;
+    task.parentTask = task.parentTask;
+	task.selectedUserId=task.userId;
     $('.task-manager-page a[href="#addTask"]').tab('show');
-    if (task.Start_Date != null)
-      task.Start_Date = task.Start_Date.slice(0, -9);
-    if (task.End_Date != null)
-      task.End_Date = task.End_Date.slice(0, -9);
+    if (task.startDate != null)
+      task.startDate = task.startDate;
+    if (task.endDate != null)
+      task.endDate = task.endDate;
     this.myForm.setValue(task);
   };
 
   public EndTask(task) {
 
-    if (task.End_Date != null && task.End_Date != "") {
+    if (task.endDate != null && task.endDate != "") {
       this.appServices.updateEndTask(task).subscribe(data => {
 
         this.callAllMethods();
@@ -575,7 +586,7 @@ export class AppComponent implements OnInit {
   };
 
   SearchTaskProject() {
-    this.searchedProject = this.viewTaskForm.get('searchedProject').value;
+    this.searchedProject = this.viewTaskForm.get('searchedProject').value;	
     $("#taskProjectModal").modal();
 
   };
