@@ -69,8 +69,11 @@ export class AppComponent implements OnInit {
   selectedManager: string = '';
   selectedManagerId: string = '';
   selectedProject: string = '';
+  selectedProjectId:string = '';
   selectedParentTask: string = '';
+  selectedParentTaskId: string = '';
   selectedUser: string = '';
+  selectedUserId: string = '';
   searchedProject: string = '';
   isTaskUpdate: boolean = false;
 
@@ -110,23 +113,23 @@ export class AppComponent implements OnInit {
     // Code for Task screen
 
     this.myForm = this.fb.group({
-      Task_ID: 0,
-      Task: ['', Validators.required],
-      Priority: [0, Validators.required],
-      Parent_ID: [''],
-      Parent_Task: [''],
-      Start_Date: [''],
-      End_Date: [''],
-      Is_Active: 0,
-      IsActive: 0,
-      Project_ID: 0,
-      Status: 0,
-      Action: [''],
-      User_ID: [''],
+      taskId: 0,
+      task: ['', Validators.required],
+      priority: [0, Validators.required],
+      parentId: [''],
+      parentTask: [''],
+      startDate: [''],
+      endDate: [''],
+      projectId: 0,
+      status: 0,
+      userId: [''],
       selectedProject: [{ disabled: true, value: '' }, Validators.required],
+	  selectedProjectId:'',
       selectedParentTask: [{ disabled: true, value: '' }, Validators.required],
+	  selectedParentTaskId:'',
       selectedUser: [{ disabled: true, value: '' }, Validators.required],
-      Project_Name: [''],
+	  selectedUserId:'',
+      projectName: [''],
 
     });
 
@@ -154,12 +157,15 @@ export class AppComponent implements OnInit {
       };
       if (e.target.id == 'projNameModal') {
         this.myForm.get('selectedProject').setValue(this.selectedProject);
+		 this.myForm.get('selectedProjectId').setValue(this.selectedProjectId);		
       };
       if (e.target.id == 'parentTaskModal') {
         this.myForm.get('selectedParentTask').setValue(this.selectedParentTask);
+		this.myForm.get('selectedParentTaskId').setValue(this.selectedParentTaskId);
       };
       if (e.target.id == 'userModal') {
         this.myForm.get('selectedUser').setValue(this.selectedUser);
+		this.myForm.get('selectedUserId').setValue(this.selectedUserId);
       };
       if (e.target.id == 'taskProjectModal') {
         this.viewTaskForm.get('searchedProject').setValue(this.searchedProject);
@@ -232,6 +238,7 @@ export class AppComponent implements OnInit {
             Swal('Success', `Data ${VID == 0 ? 'Added' : 'Updated'} successfully...`, 'success');
             this.myProjectForm.reset();
             this.projectSubmitted = false;
+			this.selectedManagerId='';
             this.callAllMethods();
           }
           else {
@@ -298,26 +305,26 @@ export class AppComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    var VID = this.myForm.value.Task_ID;
+    var VID = this.myForm.value.taskId;
 
-    var vProjName = this.selectedProject;
+    var vProjName = this.selectedProjectId;
     if (vProjName == "")
-      vProjName = this.myForm.value.Project_ID;
+      vProjName = this.myForm.value.projectId;
 
-    var vParentTask = this.selectedParentTask;
+    var vParentTask = this.selectedParentTaskId;
     if (vParentTask == "")
-      vParentTask = this.myForm.value.Parent_ID;
+      vParentTask = this.myForm.value.parentId;
 
-    var vUserName = this.selectedUser;
+    var vUserName = this.selectedUserId;
     if (vUserName == "")
-      vUserName = this.myForm.value.User_ID;
+      vUserName = this.myForm.value.userId;
   
 	if(this.parentCheck){
-		var parentTask=this.myForm.value.Task;
+		var parentTask=this.myForm.value.task;
 		if(parentTask != ""&&null !=parentTask){
 			var vParentTaskForm = {
 			  taskId: VID,
-			  task: this.myForm.value.Task,
+			  task: this.myForm.value.task,
 			  parent:this.parentCheck			  
 			};
 			
@@ -339,18 +346,22 @@ export class AppComponent implements OnInit {
 		}
 		
 	}else{	
-		if (this.myForm.valid && vProjName != "" && vParentTask != "" && vUserName != "") {
+		if (this.myForm.valid && vProjName != ""&&vProjName !=null 
+			&& vParentTask != "" &&vParentTask != null && vUserName != ""&&vUserName !=null
+			&&null!=this.myForm.value.endDate&&null!=this.myForm.value.endDate
+			&&''!=this.myForm.value.endDate&&''!=this.myForm.value.endDate) {
 		  if (this.compareTwoDates(this.myForm.value)) {
 
 			var vTaskForm = {
-			  Task_ID: VID,
-			  Parent_ID: vParentTask,
-			  Task: this.myForm.value.Task,
-			  Start_Date: this.myForm.value.Start_Date,
-			  End_Date: this.myForm.value.End_Date,
-			  Priority: this.myForm.value.Priority,
-			  Project_ID: vProjName,
-			  User_ID: vUserName
+			  taskId: VID,
+			  parentId: vParentTask,
+			  task: this.myForm.value.task,
+			  startDate: this.myForm.value.startDate,
+			  endDate: this.myForm.value.endDate,
+			  priority: this.myForm.value.priority,
+			  projectId: vProjName,
+			  userId: vUserName,
+			  status:0
 			};
 
 
@@ -362,6 +373,9 @@ export class AppComponent implements OnInit {
 				this.callAllMethods();
 				this.isTaskUpdate = false;
 				this.filter = true;
+				this.selectedProjectId='';
+				this.selectedParentTaskId='';
+				this.selectedUserId='';
 			  }
 			  else {
 				Swal('Failed', 'Please try again..', 'error');
@@ -417,6 +431,9 @@ export class AppComponent implements OnInit {
   public ResetTask() {
     this.myForm.reset();
     this.submitted = false;
+	this.selectedProjectId='';
+	this.selectedParentTaskId='';
+	this.selectedUserId='';
   }
 
   // Code for User screen  
@@ -496,8 +513,8 @@ export class AppComponent implements OnInit {
 
 
   compareTwoDates(data) {
-    if (data.End_Date != null && data.End_Date != '') {
-      if (new Date(data.End_Date) < new Date(data.Start_Date))
+    if (data.endDate != null && data.endDate != '') {
+      if (new Date(data.endDate) < new Date(data.startDate))
         return false;
 
       else
@@ -592,4 +609,13 @@ export class AppComponent implements OnInit {
   selectedManagerClick(managerName){
 	  this.selectedManager=managerName;
   }
+  selectedPrijectClick(project){
+	  this.selectedProject=project;
+  }
+  selectedParentTaskClick(task){
+	  this.selectedParentTask=task;
+  }
+  selectedUserClick(user){
+	 this.selectedUser=user;
+  } 
 }

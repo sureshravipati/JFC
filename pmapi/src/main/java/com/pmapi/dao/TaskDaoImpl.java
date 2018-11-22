@@ -2,6 +2,8 @@ package com.pmapi.dao;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
@@ -36,7 +38,6 @@ public class TaskDaoImpl implements TaskDao, PMConstants {
 		Task task = new Task();
 		Project project=new Project();
 		ParentTask parenttask=new ParentTask();
-		User user=new User(); 
 		try {
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();			
@@ -112,5 +113,69 @@ public class TaskDaoImpl implements TaskDao, PMConstants {
 		} finally {
 			session.close();
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TaskTO> getParentTasks() throws PMException {		
+		List<TaskTO> taskToList = null;
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+	        List<ParentTask> parentTaskList = session.createCriteria(ParentTask.class).list();
+	        if(null != parentTaskList && !parentTaskList.isEmpty()) {
+	        	taskToList = new ArrayList<TaskTO>();	        	
+	        	for(ParentTask task : parentTaskList) {
+	        		TaskTO taskTO = new TaskTO();
+	        		taskTO.setTaskId(task.getParentId());
+	        		taskTO.setTask(task.getParentTask());
+	        		taskToList.add(taskTO);
+	        	}
+	        }			
+		} catch(Exception ex) {
+			logger.error("Exception in getParentTasks : " + ex);
+			throw new PMException(TECH_ERROR_CODE, TECH_ERROR_MESSAGE, STATUS_500);
+		} finally {
+			session.close();
+		}
+		return taskToList;
+	}
+
+	@Override
+	public List<TaskTO> getAllTasks() throws PMException {		
+		List<TaskTO> taskToList = null;
+		Session session = null;
+		ParentTask parentTask;
+		Project project;
+		try {
+			session = sessionFactory.openSession();
+	        @SuppressWarnings("unchecked")
+			List<Task> taskList = session.createCriteria(Task.class).list();
+	        if(null != taskList && !taskList.isEmpty()) {
+	        	taskToList = new ArrayList<TaskTO>();	        	
+	        	for(Task task : taskList) {
+	        		TaskTO taskTO = new TaskTO();
+	        		taskTO.setTaskId(task.getTaskId());
+	        		taskTO.setTask(task.getTask());
+	        		parentTask=task.getParentTask();
+	        		taskTO.setParentId(parentTask.getParentId());
+	        		taskTO.setParentTask(parentTask.getParentTask());
+	        		project=task.getProject();
+	        		taskTO.setProjectId(project.getProjectId());
+	        		taskTO.setProjectName(project.getProject());
+	        		taskTO.setStartDate(task.getStartDate().toString());
+	        		taskTO.setEndDate(task.getEndDate().toString());
+	        		taskTO.setPriority(task.getPriority());
+	        		taskTO.setStatus(task.getStatus());
+	        		taskToList.add(taskTO);
+	        	}
+	        }			
+		} catch(Exception ex) {
+			logger.error("Exception in getAllTasks : " + ex);
+			throw new PMException(TECH_ERROR_CODE, TECH_ERROR_MESSAGE, STATUS_500);
+		} finally {
+			session.close();
+		}
+		return taskToList;
 	}
 }

@@ -149,7 +149,7 @@
 										<div class="col-sm-6 col-sm-offset-3">
 											<div class="form-group">
 												<label for="task">Project:</label>
-												<input type="text" class="form-control manager-name" id="Project_Name" name="Project_Name" formControlName="selectedProject">
+												<input type="text" class="form-control manager-name" id="projectName" name="projectName" formControlName="selectedProject">
 												<button type="button" class="btn btn-primary" (click)="ProjectSearch()" [disabled]="isTaskUpdate||parentCheck">Search</button>
 												<div class="clearfix"></div>
 											</div>
@@ -174,8 +174,8 @@
 										<div class="col-sm-6 col-sm-offset-3">
 											<div class="form-group ">
 												<label for="task">Task:</label>
-												<input type="hidden" class="form-control" id="Task_ID" name="Task_ID" formControlName="Task_ID">
-												<input type="text" class="form-control" id="task" name="Task" formControlName="Task">
+												<input type="hidden" class="form-control" id="taskId" name="taskId" formControlName="taskId">
+												<input type="text" class="form-control" id="task" name="task" formControlName="task">
 												<div class="clearfix"></div>
 											</div>
 										</div>
@@ -190,7 +190,7 @@
 												<div class="form-slider">
 													<b>0</b>
 													<input type="range" min="0" max="30" class="slider" step="1" value="0" id="rangeIn"
-													 name="Priority" formControlName="Priority" [attr.disabled]="parentCheck? '': null">
+													 name="priority" formControlName="priority" [attr.disabled]="parentCheck? '': null">
 													<b>30</b>
 													
 												</div>
@@ -205,7 +205,7 @@
 										<div class="col-sm-6 col-sm-offset-3">
 											<div class="form-group ">
 												<label for="task">Parent Task:</label>
-												<input type="text" class="form-control manager-name" id="Parent_Task" name="Parent_Task" formControlName="selectedParentTask">
+												<input type="text" class="form-control manager-name" id="parentTask" name="parentTask" formControlName="selectedParentTask">
 												<button type="button" class="btn btn-primary" (click)="ParentSearch()" [disabled]="parentCheck">Search</button>
 												<div class="clearfix"></div>
 											</div>
@@ -220,7 +220,7 @@
 											<div class="form-group">
 												<label for="task">Start date:</label>
 												<div class="input-group date">
-													<input type="date" class="datepicker form-control" name="Start_Date" formControlName="Start_Date" [attr.disabled]="parentCheck? '': null">
+													<input type="date" class="datepicker form-control" name="startDate" formControlName="startDate" [attr.disabled]="parentCheck? '': null">
 												</div>
 
 												<div class="clearfix"></div>
@@ -234,7 +234,7 @@
 											<div class="form-group">
 												<label for="task">End date:</label>
 												<div class="input-group date">
-													<input type="date" class="datepicker form-control" name="End_Date" formControlName="End_Date" [attr.disabled]="parentCheck? '': null">
+													<input type="date" class="datepicker form-control" name="endDate" formControlName="endDate" [attr.disabled]="parentCheck? '': null">
 												</div>
 												<div class="clearfix"></div>
 											</div>
@@ -246,7 +246,7 @@
 										<div class="col-sm-6 col-sm-offset-3">
 											<div class="form-group ">
 												<label for="task">User:</label>
-												<input type="text" class="form-control manager-name" id="User_Name" name="User_Name" formControlName="selectedUser">
+												<input type="text" class="form-control manager-name" id="userId" name="userId" formControlName="selectedUser">
 												<button type="button" class="btn btn-primary" (click)="UserSearch()" [disabled]="parentCheck">Search</button>
 												<div class="clearfix"></div>
 											</div>
@@ -257,7 +257,7 @@
 									<div class="col-sm-12">
 										<div class="col-sm-6 col-sm-offset-3">
 											<div class="form-group form-btns">
-												<button class="btn btn-primary" ng-disabled="myForm.form.valid">{{ myForm.get('Task_ID').value ? 'Update' : 'Add' }} Task</button>
+												<button class="btn btn-primary" ng-disabled="myForm.form.valid">{{ myForm.get('taskId').value ? 'Update' : 'Add' }} Task</button>
 												<button type="button" class="btn btn-secondary" (click)="ResetTask()">Reset</button>
 											</div>
 										</div>
@@ -382,10 +382,10 @@
 										<div class="col-sm-6">
 											<div class="form-group">
 												<label for="task" class="frst-label">Sort Task By:</label>
-												<button class="btn btn-primary" (click)="sortTask('Start_Date')">Start Date</button>&nbsp;
-												<button class="btn btn-primary" (click)="sortTask('End_Date')">End Date</button>&nbsp;
-												<button class="btn btn-primary" (click)="sortTask('Priority')">Priority</button>&nbsp;
-												<button class="btn btn-primary" (click)="sortTask('Is_Active')">Completed</button>
+												<button class="btn btn-primary" (click)="sortTask('startDate')">Start Date</button>&nbsp;
+												<button class="btn btn-primary" (click)="sortTask('endDate')">End Date</button>&nbsp;
+												<button class="btn btn-primary" (click)="sortTask('priority')">Priority</button>&nbsp;
+												<button class="btn btn-primary" (click)="sortTask('status')">Completed</button>
 												<div class="clearfix"></div>
 											</div>
 										</div>
@@ -410,20 +410,18 @@
 												</thead>
 												<tbody>
 													<tr *ngFor="let task of pagedItems | filter : { ProjectSearch : search.projSearch}">
-														<td align="center" style="display:none;">{{task.Task_ID}}</td>
-														<td align="center" style="display:none;">{{task.Parent_ID}}</td>
-														<td align="center">{{task.Project_Name}}</td>
-														<td align="center">{{task.Task}}</td>
-														<td align="center">{{task.Parent_Task}}</td>
-														<td align="center">{{task.Priority}}</td>
-														<td align="center">{{task.Start_Date | date: 'MM/dd/yyyy'}}</td>
-														<td align="center">{{task.End_Date | date: 'MM/dd/yyyy'}}</td>
+														<td align="center" style="display:none;">{{task.taskId}}</td>
+														<td align="center" style="display:none;">{{task.parentId}}</td>
+														<td align="center">{{task.projectName}}</td>
+														<td align="center">{{task.task}}</td>
+														<td align="center">{{task.parentTask}}</td>
+														<td align="center">{{task.priority}}</td>
+														<td align="center">{{task.startDate | date: 'MM/dd/yyyy'}}</td>
+														<td align="center">{{task.endDate | date: 'MM/dd/yyyy'}}</td>
 
 														<td>
-															<button class="btn btn-primary" (click)="EditTask(task)" [disabled]="!task.Is_Active">Edit</button>
-															<button class="btn btn-default" (click)="EndTask(task)" [disabled]="!task.Is_Active">End Task</button>
-															<!-- <button class="btn btn-primary" (click)="EditTask(task)">Edit</button>
-															<button class="btn btn-default" (click)="EndTask(task)">End Task</button> -->
+															<button class="btn btn-primary" (click)="EditTask(task)" [disabled]="task.status==1">Edit</button>
+															<button class="btn btn-default" (click)="EndTask(task)" [disabled]="task.status==1">End Task</button>
 														</td>
 													</tr>
 
@@ -513,7 +511,7 @@
 
 				<div class="modal-body" *ngFor="let proj of projectNameList| filter : { radioTaskProjectSearch : search.radioTaskProjSearch}">
 					<label class="modContainer">{{proj.project}}
-						<input  type="radio" name="radio2" [(ngModel)]="selectedProject" [id]="'proj_' +i" [value]="proj.projectId">
+						<input  type="radio" name="radio2" [(ngModel)]="selectedProjectId" (click)="selectedPrijectClick(proj.project)" [id]="'proj_' +i" [value]="proj.projectId">
 						<span class="checkmark"></span>
 					</label>
 				</div>
@@ -539,8 +537,8 @@
 					<input type="text" class="form-control" id="searchParentSearch" [(ngModel)]="search.radioParentSearch" name="radioParentSearch">
 				</div>
 				<div class="modal-body" *ngFor="let parent of parentTaskList | filter : { radioParentTaskSearch : search.radioParentSearch}">
-					<label class="modContainer">{{parent.Parent_Task}}
-						<input type="radio" name="radio3" [(ngModel)]="selectedParentTask" [value]="parent.Parent_ID">
+					<label class="modContainer">{{parent.task}}
+						<input type="radio" name="radio3" [(ngModel)]="selectedParentTaskId" (click)="selectedParentTaskClick(parent.task)" [value]="parent.taskId">
 						<span class="checkmark"></span>
 					</label>
 				</div>
@@ -567,7 +565,7 @@
 					</div>
 				<div class="modal-body" *ngFor="let user of userDetails | filter : { radioUserTaskSearch : search.radioUserSearch}">
 					<label class="modContainer">{{user.firstName}}, {{user.lastName}}
-						<input type="radio" name="radio4" [(ngModel)]="selectedUser" [id]="'user_'+i" [value]="user.User_ID">
+						<input type="radio" name="radio4" [(ngModel)]="selectedUserId" (click)="selectedUserClick(user.firstName +','+user.lastName)" [id]="'user_'+i" [value]="user.userId">
 						<span class="checkmark"></span>
 					</label>
 				</div>
@@ -592,8 +590,8 @@
 				</div>
 
 				<div class="modal-body" *ngFor="let project of projectNameList | filter : { radioProjectSearch : search.radioProjSearch}">
-					<label class="modContainer">{{project.Project}}
-						<input type="radio" name="radio5" [(ngModel)]="searchedProject" [id]="'project_'+i" [value]="project.Project">
+					<label class="modContainer">{{project.project}}
+						<input type="radio" name="radio5" [(ngModel)]="searchedProject" [id]="'project_'+i" [value]="project.project">
 						<span class="checkmark"></span>
 					</label>
 				</div>

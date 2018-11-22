@@ -7,7 +7,9 @@ public class TaskTO implements Serializable{
 	private int taskId;	
 	private String task;
 	private int parentId;
+	private String parentTask;
 	private int projectId;	
+	private String projectName;
 	private String startDate;
 	private String endDate;	
 	private int priority;	
@@ -133,5 +135,29 @@ public class TaskTO implements Serializable{
 	 */
 	public void setUserId(int userId) {
 		this.userId = userId;
-	}		
+	}
+	/**
+	 * @return the parentTask
+	 */
+	public String getParentTask() {
+		return parentTask;
+	}
+	/**
+	 * @param parentTask the parentTask to set
+	 */
+	public void setParentTask(String parentTask) {
+		this.parentTask = parentTask;
+	}
+	/**
+	 * @return the projectName
+	 */
+	public String getProjectName() {
+		return projectName;
+	}
+	/**
+	 * @param projectName the projectName to set
+	 */
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}	
 }

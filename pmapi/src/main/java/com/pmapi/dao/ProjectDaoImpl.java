@@ -1,14 +1,3 @@
-/**
- * ProjectManagerDaoImpl.java
- *
- * Description: 
- *
- * Modification History
- *
- * Date        Version   Developer      Description
- * ---------   -------   ------------   --------------------------------------
- * 11/14/2018   1.0	 	 Cognizant		Initial version
- */
 package com.pmapi.dao;
 
 import java.text.DateFormat;
@@ -94,8 +83,6 @@ public class ProjectDaoImpl implements ProjectDao, PMConstants {
 		Transaction tx = null;
 		DateFormat formatter=new SimpleDateFormat(YYYY_MM_DD);
 		Project project = new Project();
-		Set<User> useSet;
-		User user=null;
 		try {
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();

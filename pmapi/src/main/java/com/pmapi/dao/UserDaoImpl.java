@@ -1,14 +1,3 @@
-/**
- * ProjectManagerDaoImpl.java
- *
- * Description: 
- *
- * Modification History
- *
- * Date        Version   Developer      Description
- * ---------   -------   ------------   --------------------------------------
- * 11/14/2018   1.0	 	 Cognizant		Initial version
- */
 package com.pmapi.dao;
 
 import java.util.ArrayList;

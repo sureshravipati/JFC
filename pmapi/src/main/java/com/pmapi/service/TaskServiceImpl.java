@@ -1,5 +1,7 @@
 package com.pmapi.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,16 @@ public class TaskServiceImpl implements TaskService {
 		}else {
 			return taskDao.saveTask(task);
 		}
+	}
+
+	@Override
+	public List<TaskTO> getParentTasks() throws PMException {
+		return taskDao.getParentTasks();
+	}
+
+	@Override
+	public List<TaskTO> getAllTasks() throws PMException {
+		return taskDao.getAllTasks();
 	}	
 
 }

@@ -19,11 +19,11 @@ export class FilterPipe implements PipeTransform {
     }
 
     if (args.radioProjectSearch) {
-      value = value.filter(project => project.Project.toLowerCase().indexOf(args.radioProjectSearch.toLowerCase()) != -1);
+      value = value.filter(project => project.project.toLowerCase().indexOf(args.radioProjectSearch.toLowerCase()) != -1);
     }
 
     if (args.radioTaskProjectSearch) {
-      value = value.filter(proj => proj.Project.toLowerCase().indexOf(args.radioTaskProjectSearch.toLowerCase()) != -1);
+      value = value.filter(proj => proj.project.toLowerCase().indexOf(args.radioTaskProjectSearch.toLowerCase()) != -1);
     }
 
     if (args.radioManagerSearch) {
@@ -31,7 +31,7 @@ export class FilterPipe implements PipeTransform {
     }
 
     if (args.radioParentTaskSearch) {
-      value = value.filter(parent => parent.Parent_Task.toLowerCase().indexOf(args.radioParentTaskSearch.toLowerCase()) != -1);
+      value = value.filter(parent => parent.task.toLowerCase().indexOf(args.radioParentTaskSearch.toLowerCase()) != -1);
     }
 
     if (args.radioUserTaskSearch) {

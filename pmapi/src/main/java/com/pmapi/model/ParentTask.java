@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,10 +19,6 @@ public class ParentTask {
 	@Column(name="parent_task")
 	private String parentTask;
 	
-	@ManyToOne
-	@JoinColumn(name = "project_id")
-	private Project project;
-
 	/**
 	 * @return the parentId
 	 */
@@ -52,18 +46,4 @@ public class ParentTask {
 	public void setParentTask(String parentTask) {
 		this.parentTask = parentTask;
 	}
-
-	/**
-	 * @return the project
-	 */
-	public Project getProject() {
-		return project;
-	}
-
-	/**
-	 * @param project the project to set
-	 */
-	public void setProject(Project project) {
-		this.project = project;
-	}	
 }
