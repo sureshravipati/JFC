@@ -10,5 +10,8 @@ public interface PMConstants {
 	static int STATUS_400 = 400;	
 	static String YYYY_MM_DD = "yyyy-MM-dd";
 	static String COMPLETED="completed";
+	static String SUCCESS="Success";
+	static String ENDTASK="1";
+	static String PROJECT_ID="project.projectId";
 	
 }

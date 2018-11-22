@@ -1,13 +1,3 @@
-/**
- * ExceptionResponse.java
- *
- *
- * Modification History
- *
- * Date        Version   Developer      Description
- * ---------   -------   ------------   --------------------------------------
- * 02/19/2018  1.0      Cognizant       Initial Version
- */
 package com.pmapi.exception;
 
 

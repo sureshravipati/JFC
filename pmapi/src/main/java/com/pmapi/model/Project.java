@@ -3,6 +3,7 @@ package com.pmapi.model;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,7 +40,7 @@ public class Project {
 	@Column(name="priority")
 	private int priority;
 	
-	@OneToMany(fetch = FetchType.LAZY,mappedBy="project")
+	@OneToMany(fetch = FetchType.LAZY,mappedBy="project",cascade=CascadeType.ALL)
 	private Set<Task> task;
 	
 	@OneToMany(fetch = FetchType.LAZY)

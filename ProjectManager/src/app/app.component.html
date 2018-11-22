@@ -69,7 +69,7 @@
 												<label for="task">Manager:</label>
 												<input type="text" class="form-control manager-name" id="Manager_Name" name="selectedManager" formControlName="selectedManager">
 												<input type="hidden" class="form-control manager-name" id="Manager_Name_id" name="selectedManagerId" formControlName="selectedManagerId">
-												<button type="button" class="btn btn-primary" (click)="ManagerSearch()">Search</button>
+												<button type="button" class="btn btn-primary btn-circle" (click)="ManagerSearch()">Search</button>
 												<div class="clearfix"></div>
 											</div>
 										</div>
@@ -150,7 +150,7 @@
 											<div class="form-group">
 												<label for="task">Project:</label>
 												<input type="text" class="form-control manager-name" id="projectName" name="projectName" formControlName="selectedProject">
-												<button type="button" class="btn btn-primary" (click)="ProjectSearch()" [disabled]="isTaskUpdate||parentCheck">Search</button>
+												<button type="button" class="btn btn-primary btn-circle" (click)="ProjectSearch()" [disabled]="isTaskUpdate||parentCheck">Search</button>
 												<div class="clearfix"></div>
 											</div>
 										</div>
@@ -206,7 +206,7 @@
 											<div class="form-group ">
 												<label for="task">Parent Task:</label>
 												<input type="text" class="form-control manager-name" id="parentTask" name="parentTask" formControlName="selectedParentTask">
-												<button type="button" class="btn btn-primary" (click)="ParentSearch()" [disabled]="parentCheck">Search</button>
+												<button type="button" class="btn btn-primary btn-circle" (click)="ParentSearch()" [disabled]="parentCheck">Search</button>
 												<div class="clearfix"></div>
 											</div>
 										</div>
@@ -247,7 +247,7 @@
 											<div class="form-group ">
 												<label for="task">User:</label>
 												<input type="text" class="form-control manager-name" id="userId" name="userId" formControlName="selectedUser">
-												<button type="button" class="btn btn-primary" (click)="UserSearch()" [disabled]="parentCheck">Search</button>
+												<button type="button" class="btn btn-primary btn-circle" (click)="UserSearch()" [disabled]="parentCheck">Search</button>
 												<div class="clearfix"></div>
 											</div>
 										</div>
@@ -375,7 +375,7 @@
 												<label for="task" class="frst-label">Project:</label>
 												<input type="text" style="width:60%" class="form-control" id="view-task" [(ngModel)]="search.projSearch" name="projSearch" formControlName="searchedProject">&nbsp;
 
-												<button class="btn btn-primary" (click)="SearchTaskProject()">Search</button>
+												<button class="btn btn-primary btn-circle" (click)="SearchTaskProject()">Search</button>
 												<div class="clearfix"></div>
 											</div>
 										</div>
@@ -393,68 +393,33 @@
 								</div>
 								<div class="row">
 									<div class="col-sm-12">
-										<div class="table-responsive task-table">
-											<table class="table table-bordered table-hover">
+										<div class="table-responsive border_doted">
+											<table class="table view_task ble-hover" *ngFor="let task of taskDetails">
 												<thead>
-													<tr>														
-														<th>Project</th>
-														<th>Task</th>
-														<th>Parent</th>
-														<th>Priority</th>
-														<th>Start</th>
-														<th>End</th>
-														<th>Action</th>
+													<tr>
+														<th class="view_task_head">Task</th>
+														<th class="view_task_head">Parent</th>
+														<th class="view_task_head">Priority</th>
+														<th class="view_task_head">Start</th>
+														<th class="view_task_head">End</th>
+														<th class="view_task_head"></th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr *ngFor="let task of pagedItems">														
-														<td align="center">{{task.projectName}}</td>
-														<td align="center">{{task.task}}</td>
-														<td align="center">{{task.parentTask}}</td>
-														<td align="center">{{task.priority}}</td>
-														<td align="center">{{task.startDate | date: 'MM/dd/yyyy'}}</td>
-														<td align="center">{{task.endDate | date: 'MM/dd/yyyy'}}</td>
+													<tr>
+														<td class="view_task_data"><label>{{task.task}}</label></td>													<td class="view_task_data"><label>{{task.parentTask}}</label></td>
+														<td class="view_task_data">{{task.priority}}</td>
+														<td class="view_task_data">{{task.startDate | date: 'MM/dd/yyyy'}}</td>
+														<td class="view_task_data">{{task.endDate | date: 'MM/dd/yyyy'}}</td>
 
-														<td>
-															<button class="btn btn-primary" (click)="EditTask(task)" [disabled]="task.status==1">Edit</button>
+														<td class="view_task_data">
+															<button class="btn btn-primary" (click)="EditTask(task)" [disabled]="task.status==1">Edit</button>&nbsp;&nbsp;&nbsp;
 															<button class="btn btn-primary" (click)="EndTask(task)" [disabled]="task.status==1">End Task</button>
 														</td>
-													</tr>
-
-
-													<tr>
-														<td colspan="7">
-
-															<div *ngFor="let item of pagedItems">{{item.name}}</div>
-
-
-															<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-																<li [ngClass]="{disabled:pager.currentPage === 1}">
-																	<a (click)="setPage(1)">
-																		<< </a>
-																</li>
-																<li [ngClass]="{disabled:pager.currentPage === 1}">
-																	<a (click)="setPage(pager.currentPage - 1)">
-																		< </a>
-																</li>
-
-																<li [ngClass]="{active:pager.currentPage === page}">
-																	<a>{{pager.currentPage}}</a>
-																</li>
-
-																<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-																	<a (click)="setPage(pager.currentPage + 1)"> > </a>
-																</li>
-																<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-																	<a (click)="setPage(pager.totalPages)"> >> </a>
-																</li>
-															</ul>
-														</td>
-													</tr>
+													</tr>													
 												</tbody>
 											</table>
-
-										</div>
+										</div>		
 									</div>
 								</div>
 							</div>
@@ -608,9 +573,6 @@
 					<h4 class="modal-title">Delete confirm</h4>
 				</div>
 				<div class="modal-body">
-					<label class="modContainer">
-						User may have task(s), deleting the user it delete the task associated to.
-					</label>
 					<label class="modContainer">
 						Are you sure want to delete?
 					</label>

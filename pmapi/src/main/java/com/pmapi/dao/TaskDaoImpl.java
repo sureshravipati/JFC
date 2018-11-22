@@ -58,7 +58,7 @@ public class TaskDaoImpl implements TaskDao, PMConstants {
 			task=(Task) session.merge(task);
 			tx.commit();
 			this.updateUser(task.getTaskId(),taskTo.getUserId());
-			return "Success";
+			return SUCCESS;
 		} catch(Exception ex) {
 			logger.error("Exception occured in saveTask : " + ex);
 			throw new PMException(TECH_ERROR_CODE, TECH_ERROR_MESSAGE, STATUS_500);
@@ -81,7 +81,7 @@ public class TaskDaoImpl implements TaskDao, PMConstants {
 			parenttask.setParentTask(task.getTask());
 			session.saveOrUpdate(parenttask);
 			tx.commit();
-			return "Success";
+			return SUCCESS;
 		} catch(Exception ex) {
 			logger.error("Exception occured in saveParentTask : " + ex);
 			throw new PMException(TECH_ERROR_CODE, TECH_ERROR_MESSAGE, STATUS_500);
@@ -156,7 +156,7 @@ public class TaskDaoImpl implements TaskDao, PMConstants {
 		try {
 			session = sessionFactory.openSession();
 			criteria=session.createCriteria(Task.class);
-			criteria.add(Restrictions.eq("project.projectId", ProjectId));
+			criteria.add(Restrictions.eq(PROJECT_ID, ProjectId));
 			taskList= criteria.list();
 	        if(null != taskList && !taskList.isEmpty()) {
 	        	taskToList = new ArrayList<TaskTO>();	        	
@@ -207,10 +207,10 @@ public class TaskDaoImpl implements TaskDao, PMConstants {
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();	
 			task=session.load(Task.class, taskId);
-			task.setStatus("1");
+			task.setStatus(ENDTASK);
 			session.saveOrUpdate(task);
 			tx.commit();
-			return "Success";
+			return SUCCESS;
 		} catch(Exception ex) {
 			logger.error("Exception occured in saveParentTask : " + ex);
 			throw new PMException(TECH_ERROR_CODE, TECH_ERROR_MESSAGE, STATUS_500);

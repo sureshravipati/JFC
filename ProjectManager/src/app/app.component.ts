@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonServiceService } from './services/common-service.service';
 import { Http, Response } from '@angular/http';
-import { PagerService } from './services/pageService';
 import { AlertsModule } from 'angular-alert-module';
 import Swal from 'sweetalert2';
 import { OrderPipe, OrderModule } from 'ngx-order-pipe';
@@ -16,7 +15,7 @@ declare var $: any;
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [PagerService]
+  providers: []
 })
 
 @NgModule({
@@ -28,7 +27,7 @@ declare var $: any;
 })
 
 export class AppComponent implements OnInit {
-  constructor(private appServices: CommonServiceService, private pageService: PagerService,
+  constructor(private appServices: CommonServiceService,
     private fb: FormBuilder, private orderPipe: OrderPipe) { }
 
   title = 'Project-Manager';
@@ -38,9 +37,6 @@ export class AppComponent implements OnInit {
   projDetails: any = [];
   managerDetails: any = [];
   projectNameList: any = [];
-  pager: any = {};
-  pagedItems: any = [];
-  page: number;
   response: any;
   search: any = {
     projSearch: '',
@@ -304,11 +300,6 @@ export class AppComponent implements OnInit {
 		 
 		  this.taskDetails = data;
 		  
-		  if(this.taskDetails!=null&&this.taskDetails!=''){
-			
-			this.setPage(1);
-		  
-		  }
 		});
   };	 
 
@@ -510,19 +501,6 @@ export class AppComponent implements OnInit {
 
   // Common function
 
-  setPage(page: number) {
-    if (this.pager.totalPages != 0) {
-      if (page < 1 || page > this.pager.totalPages) {
-        return;
-      }
-    }
-    // get pager object from service
-    this.pager = this.pageService.getPager(this.taskDetails.length, page);
-    // get current page of items
-    this.pagedItems = this.taskDetails.slice(this.pager.startIndex, this.pager.endIndex + 1);
-  };
-
-
   compareTwoDates(data) {
     if (data.endDate != null && data.endDate != '') {
       if (new Date(data.endDate) < new Date(data.startDate))
@@ -614,7 +592,7 @@ export class AppComponent implements OnInit {
   };
 
   sortTask(taskkey) {
-    this.pagedItems = this.orderPipe.transform(this.pagedItems, taskkey);
+    this.taskDetails = this.orderPipe.transform(this.taskDetails, taskkey);
   };
   
   selectedManagerClick(managerName){

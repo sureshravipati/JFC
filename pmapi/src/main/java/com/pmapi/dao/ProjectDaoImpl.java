@@ -98,7 +98,7 @@ public class ProjectDaoImpl implements ProjectDao, PMConstants {
 			session.flush();
 			tx.commit();
 			this.updateUser(project.getProjectId(),projectTO.getManagerId());
-			return "Success";
+			return SUCCESS;
 		} catch(Exception ex) {
 			logger.error("Exception occured in saveProject : " + ex);
 			throw new PMException(TECH_ERROR_CODE, TECH_ERROR_MESSAGE, STATUS_500);

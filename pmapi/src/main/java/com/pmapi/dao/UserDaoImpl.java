@@ -65,7 +65,7 @@ public class UserDaoImpl implements UserDao, PMConstants {
 			User user= session.get(User.class, userId);
 			session.delete(user);
 			tx.commit();
-			return "Success";
+			return SUCCESS;
 		} catch(Exception e) {
 			logger.error("Exception occured in deleteUser : " + e);
 			throw new PMException(TECH_ERROR_CODE, TECH_ERROR_MESSAGE, STATUS_500);
@@ -91,7 +91,7 @@ public class UserDaoImpl implements UserDao, PMConstants {
 			user.setEmpId(userTo.getEmployeeId());
 			session.saveOrUpdate(user);
 			tx.commit();
-			return "Success";
+			return SUCCESS;
 		} catch(Exception e) {
 			logger.error("Exception occured in saveUser : " + e);
 			throw new PMException(TECH_ERROR_CODE, TECH_ERROR_MESSAGE, STATUS_500);

@@ -8,7 +8,6 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } 
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonServiceService } from './services/common-service.service';
 import { FilterPipe } from './pipes/filter.pipe';
-import { PagerService } from './services/pageService';
 import { AlertsModule } from 'angular-alert-module';
 import Swal from 'sweetalert2';
 import { Observable, of } from 'rxjs';
@@ -23,18 +22,18 @@ describe('AppComponent', () => {
 
   const parentTaskDetail: any = [
     {
-      "Parent_Task": "Cognizant",
-      "Parent_ID": 1
+      "ParentTask": "Cognizant",
+      "ParentId": 1
 
     },
     {
-      "Parent_Task": "Internal",
-      "Parent_ID": 2
+      "ParentTask": "Internal",
+      "ParentId": 2
 
     },
     {
-      "Parent_Task": "External",
-      "Parent_ID": 3
+      "ParentTask": "External",
+      "ParentId": 3
 
     }
   ];
@@ -229,7 +228,7 @@ describe('AppComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [HttpClientModule, RouterTestingModule, BrowserAnimationsModule, FormsModule, AlertsModule, ReactiveFormsModule],
-      providers: [{ provide: CommonServiceService, useValue: mockService }, PagerService,OrderPipe]
+      providers: [{ provide: CommonServiceService, useValue: mockService },OrderPipe]
     }).compileComponents();
   }));
 
@@ -250,7 +249,7 @@ describe('AppComponent', () => {
   }));
 
   it('should be get', inject([CommonServiceService], (service: CommonServiceService) => {
-    service.getTaskManager().subscribe(data => { component.pagedItems = data; });
+    service.getTaskManager().subscribe(data => { component.taskDetails = data; });
     fixture.detectChanges();
     expect(service).toBeTruthy();
   }));
@@ -263,19 +262,13 @@ describe('AppComponent', () => {
 
 
   it('should be get', inject([CommonServiceService], (service: CommonServiceService) => {
-    service.getManagerDetails().subscribe(data => { component.managerDetails = data; });
-    fixture.detectChanges();
-    expect(service).toBeTruthy();
-  }));
-
-  it('should be get', inject([CommonServiceService], (service: CommonServiceService) => {
     service.getUserDetails().subscribe(data => { component.userDetails = data; });
     fixture.detectChanges();
     expect(service).toBeTruthy();
   }));
 
   it('should be get', inject([CommonServiceService], (service: CommonServiceService) => {
-    service.getTaskManager().subscribe(data => { component.pagedItems = data; });
+    service.getTaskManager().subscribe(data => { component.taskDetails = data; });
     fixture.detectChanges();
     expect(service).toBeTruthy();
   }));
