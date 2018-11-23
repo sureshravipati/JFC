@@ -12,6 +12,8 @@ import { AlertsModule } from 'angular-alert-module';
 import Swal from 'sweetalert2';
 import { Observable, of } from 'rxjs';
 import { OrderPipe, OrderModule } from 'ngx-order-pipe';
+import { MockBackend } from '@angular/http/testing';
+import { ResponseOptions, XHRBackend } from '@angular/http';
 
 declare var $: any;
 
@@ -25,154 +27,65 @@ describe('AppComponent', () => {
       "ParentTask": "Cognizant",
       "ParentId": 1
 
-    },
-    {
-      "ParentTask": "Internal",
-      "ParentId": 2
-
-    },
-    {
-      "ParentTask": "External",
-      "ParentId": 3
-
     }
   ];
 
   
   const taskDetail: any = [
     {
-      "Project_ID": "1",
-      "Task_ID": "1",
-      "Project": "Project Name1",
-      "Parent_ID": 2,
-      "Parent_Task": "Cognizant",
-      "Task": "Test 1",
-      "Start_Date": "09/07/2018",
-      "End_Date": "09/08/2018",
-      "Priority": 4,
-      "Manager_ID": 123,
-      "ProjStatus": "Completed",
-      "Status": 0,
-      "Is_Active": 1,
-      "User_ID": 4,
-      "Project_Name": "Test"
-    },
-    {
-      "Project_ID": "1",
-      "Task_ID": "1",
-      "Project": "Project Name1",
-      "Parent_ID": 2,
-      "Parent_Task": "Cognizant",
-      "Task": "Test 1",
-      "Start_Date": "09/07/2018",
-      "End_Date": "09/08/2018",
-      "Priority": 4,
-      "Manager_ID": 123,
-      "ProjStatus": "Completed",
-      "Status": 0,
-      "Is_Active": 1,
-      "User_ID": 4,
-      "Project_Name": "Test"
-    },
-    {
-      "Project_ID": "1",
-      "Task_ID": "1",
-      "Project": "Project Name1",
-      "Parent_ID": 2,
-      "Parent_Task": "Cognizant",
-      "Task": "Test 1",
-      "Start_Date": "09/07/2018",
-      "End_Date": "09/08/2018",
-      "Priority": 4,
-      "Manager_ID": 123,
-      "ProjStatus": "Completed",
-      "Status": 0,
-      "Is_Active": 1,
-      "User_ID": 4,
-      "Project_Name": "Test"
+      "projectId": "1",
+      "taskId": "1",
+      "project": "Project Name1",
+      "parentdD": 2,
+      "parentTask": "Cognizant",
+      "task": "Test 1",
+      "startDate": "09/07/2018",
+      "endDate": "09/08/2018",
+      "priority": 4,
+      "managerId": 123,
+      "projStatus": "Completed",
+      "status": 0,
+      "userId": 4
     }
   ];
 
   const projectDetail: any = [
     {
-      "Project_ID": "1",
-      "Task_ID": "1",
-      "Project": "Project Name1",
-      "Parent_ID": 2,
-      "Task": "Test 1",
-      "Start_Date": "09/07/2018",
-      "End_Date": "09/08/2018",
-      "Priority": 4,
-      "Manager_ID": 123,
-      "ProjStatus": "Completed",
-      "Is_Active": 1,
-      "TaskCount": 4
-    },
-    {
-      "Project_ID": "2",
-      "Task_ID": "2",
-      "Project": "Project Name2",
-      "Parent_ID": 2,
-      "Task": "Test 2",
-      "Start_Date": "09/07/2018",
-      "End_Date": "09/08/2018",
-      "Priority": 20,
-      "Manager_ID": 1234,
-      "ProjStatus": "Pending",
-      "Is_Active": 0,
-      "TaskCount": 4
-    },
-    {
-      "Project_ID": "3",
-      "Task_ID": "3",
-      "Project": "Project Name3",
-      "Parent_ID": 3,
-      "Task": "Test 3",
-      "Start_Date": "09/07/2018",
-      "End_Date": "09/08/2018",
-      "Priority": 15,
-      "Manager_ID": 12345,
-      "ProjStatus": "Pending",
-      "Is_Active": 0,
-      "TaskCount": 4
+      "projectId": "1",
+      "taskId": "1",
+      "project": "Project Name1",
+      "parentId": 2,
+      "task": "Test 1",
+      "startDate": "09/07/2018",
+      "endDate": "09/08/2018",
+      "priority": 4,
+      "managerId": 123,
+      "taskCount": 4
     }
   ];
 
     const managerDetails: any = [
     {
-      "Manager_ID": "1"
+      "managerId": "1"
 
-    },
-    {
-      "Manager_ID": "2"
     }
   ];
 
   const projectList: any = [
     {
-      "Project_ID" : 1,
-      "Project" : "Project1",
+      "projectId" : 1,
+      "project" : "Project1",
 
-    },
-    {
-      "Project_ID" : 1,
-      "Project" : "Project1",
     }
   ];
   
 
   const userDetails: any = [
     {
-      "User_ID": "1",
-      "First_Name": "mahesh",
-      "Last_Name": "Kumaar",
-      "Employee_ID": "123"
-    },
-    {
-      "User_ID": "2",
-      "First_Name": "mahesh",
-      "Last_Name": "Kumaar",
-      "Employee_ID": "1234"
+      "userId": "1",
+      "firstName": "mahesh",
+      "lastName": "Kumaar",
+      "employeeId": "123"
     }
   ];
 
@@ -213,7 +126,7 @@ describe('AppComponent', () => {
     },
 
     updateEndTask(task): Observable<any> {
-      let idx = taskDetail.findIndex(x => x.Task_ID == task.Task_ID);
+      let idx = taskDetail.findIndex(x => x.taskiD == task.taskId);
       if (idx !== -1) {
         taskDetail[idx] = task;
       }
@@ -228,7 +141,7 @@ describe('AppComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [HttpClientModule, RouterTestingModule, BrowserAnimationsModule, FormsModule, AlertsModule, ReactiveFormsModule],
-      providers: [{ provide: CommonServiceService, useValue: mockService },OrderPipe]
+      providers: [{ provide: CommonServiceService, useValue: mockService },OrderPipe,{ provide: XHRBackend, useClass: MockBackend }]
     }).compileComponents();
   }));
 
@@ -242,34 +155,73 @@ describe('AppComponent', () => {
     expect(component).toBeTruthy();
   }));
 
-  it('should be get', inject([CommonServiceService], (service: CommonServiceService) => {
+  it('should be get Parent tasks', inject([CommonServiceService], (service: CommonServiceService) => {
     service.getParentTask().subscribe(data => { component.parentTaskList = data; });
     fixture.detectChanges();
     expect(service).toBeTruthy();
   }));
 
-  it('should be get', inject([CommonServiceService], (service: CommonServiceService) => {
-    service.getTaskManager().subscribe(data => { component.taskDetails = data; });
+  it('should be get Project Tasks', inject([CommonServiceService], (service: CommonServiceService) => {
+	  let poject={
+      "projectId": "1",
+      "taskId": "1",
+      "project": "Project Name1",
+      "parentId": 2,
+      "task": "Test 1",
+      "startDate": "09/07/2018",
+      "endDate": "09/08/2018",
+      "priority": 4,
+      "managerId": 123,
+      "taskCount": 4
+    };
+    service.getTaskManager(poject).subscribe(data => { component.taskDetails = data; });
     fixture.detectChanges();
     expect(service).toBeTruthy();
   }));
 
-  it('should be get', inject([CommonServiceService], (service: CommonServiceService) => {
+  it('should be get All Projects', inject([CommonServiceService], (service: CommonServiceService) => {
     service.getProjectDetails().subscribe(data => { component.projDetails = data; });
     fixture.detectChanges();
     expect(service).toBeTruthy();
   }));
-
-
-  it('should be get', inject([CommonServiceService], (service: CommonServiceService) => {
+  it('should be get All Users', inject([CommonServiceService], (service: CommonServiceService) => {
     service.getUserDetails().subscribe(data => { component.userDetails = data; });
     fixture.detectChanges();
     expect(service).toBeTruthy();
   }));
-
-  it('should be get', inject([CommonServiceService], (service: CommonServiceService) => {
-    service.getTaskManager().subscribe(data => { component.taskDetails = data; });
-    fixture.detectChanges();
-    expect(service).toBeTruthy();
+  
+  it('should be have End task', inject([CommonServiceService], (service: CommonServiceService) => {
+	  let task={
+			  "projectId": "1",
+			  "taskId": "1",
+			  "project": "Project Name1",
+			  "parentdD": 2,
+			  "parentTask": "Cognizant",
+			  "task": "Test 1",
+			  "startDate": "09/07/2018",
+			  "endDate": "09/08/2018",
+			  "priority": 4,
+			  "managerId": 123,
+			  "projStatus": "Completed",
+			  "status": 0,
+			  "userId": 4   
+			  };
+		component.EndTask(task);
+		component.ResetTask()
+		expect(service).toBeTruthy();
   }));
+  
+  it('should be have Edit User', inject([CommonServiceService], (service: CommonServiceService) => {
+	  let user={
+			    "firstName": "fname",
+			    "lastName": "lname",
+				"userId": 1,
+				"employeeId": 2,
+			    "projectId": 2,
+			    "taskId": 3
+			  };
+		component.EditUser(user);
+		expect(service).toBeTruthy();
+  }));
+  
 });
