@@ -406,13 +406,13 @@ export class AppComponent implements OnInit {
 	task.selectedParentTaskId= task.parentId;
     task.selectedUser = task.userName;
     task.parentTask = task.parentTask;
-	task.selectedUserId=task.userId;
-    $('.task-manager-page a[href="#addTask"]').tab('show');
+	task.selectedUserId=task.userId;    
     if (task.startDate != null)
       task.startDate = task.startDate;
     if (task.endDate != null)
       task.endDate = task.endDate;
     this.myForm.setValue(task);
+	$('.task-manager-page a[href="#addTask"]').tab('show');
   };
 
   public EndTask(task) {
@@ -472,9 +472,9 @@ export class AppComponent implements OnInit {
     this.isUserUpdate = true;
   };
 
-  public DeleteUser(user) {
-    $("#deleteModal").modal();
+  public DeleteUser(user) {    
     this.deleteUserValue = user;
+	$("#deleteModal").modal();
   };
 
   public ConfirmDeleteUser() {

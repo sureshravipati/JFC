@@ -12,8 +12,9 @@ import { AlertsModule } from 'angular-alert-module';
 import Swal from 'sweetalert2';
 import { Observable, of } from 'rxjs';
 import { OrderPipe, OrderModule } from 'ngx-order-pipe';
-import { MockBackend } from '@angular/http/testing';
-import { ResponseOptions, XHRBackend } from '@angular/http';
+import { Http, Request, RequestMethod, RequestOptions, Response,
+         ResponseOptions, XHRBackend,HttpModule } from '@angular/http';
+import { MockBackend, MockConnection } from '@angular/http/testing';
 
 declare var $: any;
 
@@ -21,6 +22,7 @@ describe('AppComponent', () => {
 
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
+  let backend: MockBackend;
 
   const parentTaskDetail: any = [
     {
@@ -136,13 +138,16 @@ describe('AppComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent, FilterPipe
-      ],
+      declarations: [ AppComponent, FilterPipe ],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [HttpClientModule, RouterTestingModule, BrowserAnimationsModule, FormsModule, AlertsModule, ReactiveFormsModule],
-      providers: [{ provide: CommonServiceService, useValue: mockService },OrderPipe,{ provide: XHRBackend, useClass: MockBackend }]
+      providers: [{ provide: CommonServiceService, useValue: mockService },
+					OrderPipe,
+				  { provide: MockBackend, useClass: MockBackend },
+				  { provide: XHRBackend, useExisting: MockBackend }
+				]
     }).compileComponents();
+	backend = TestBed.get(MockBackend);
   }));
 
   beforeEach(() => {
@@ -151,17 +156,17 @@ describe('AppComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create the app', async(() => {
+  it('create the app', async(() => {
     expect(component).toBeTruthy();
   }));
 
-  it('should be get Parent tasks', inject([CommonServiceService], (service: CommonServiceService) => {
+  it('Get All Parent tasks', inject([CommonServiceService], (service: CommonServiceService) => {
     service.getParentTask().subscribe(data => { component.parentTaskList = data; });
     fixture.detectChanges();
     expect(service).toBeTruthy();
   }));
 
-  it('should be get Project Tasks', inject([CommonServiceService], (service: CommonServiceService) => {
+  it('Get All Project Tasks', inject([CommonServiceService], (service: CommonServiceService) => {
 	  let poject={
       "projectId": "1",
       "taskId": "1",
@@ -179,18 +184,18 @@ describe('AppComponent', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should be get All Projects', inject([CommonServiceService], (service: CommonServiceService) => {
+  it('Get All Projects', inject([CommonServiceService], (service: CommonServiceService) => {
     service.getProjectDetails().subscribe(data => { component.projDetails = data; });
     fixture.detectChanges();
     expect(service).toBeTruthy();
   }));
-  it('should be get All Users', inject([CommonServiceService], (service: CommonServiceService) => {
+  it('Get All Users', inject([CommonServiceService], (service: CommonServiceService) => {
     service.getUserDetails().subscribe(data => { component.userDetails = data; });
     fixture.detectChanges();
     expect(service).toBeTruthy();
   }));
   
-  it('should be have End task', inject([CommonServiceService], (service: CommonServiceService) => {
+  it('End task', inject([CommonServiceService], (service: CommonServiceService) => {
 	  let task={
 			  "projectId": "1",
 			  "taskId": "1",
@@ -211,7 +216,7 @@ describe('AppComponent', () => {
 		expect(service).toBeTruthy();
   }));
   
-  it('should be have Edit User', inject([CommonServiceService], (service: CommonServiceService) => {
+  it('Edit User', inject([CommonServiceService], (service: CommonServiceService) => {
 	  let user={
 			    "firstName": "fname",
 			    "lastName": "lname",
@@ -224,4 +229,230 @@ describe('AppComponent', () => {
 		expect(service).toBeTruthy();
   }));
   
+  it('Save Project ', async(inject([MockBackend,CommonServiceService], (mockBackend: MockBackend,service: CommonServiceService)  => {
+	  
+	  try{
+		component.onProjectSubmit();
+	   }catch(e){};
+	   let  project={
+		  "projectId": 1,
+		  "project": 'Test Project',
+		  "Priority_Project": 1,
+		  "startDate": "10/10/2012",
+		  "endDate": "11/11/2011",
+		  "Project": 'prject',
+		  "priority": 10,
+		  "taskCount":10,
+		  "taskCompleted":5,
+		  "managerId": 10,
+		  "managerName":"User Name",
+		  "selectedManager": "Manager",
+		  "selectedManagerId":10,
+		  "isActive":0
+	  };
+	    component.myProjectForm.setValue(project);
+	  try{
+		component.onProjectSubmit();
+	   }catch(e){};
+	   
+	     project={
+		  "projectId": 1,
+		  "project": 'Test Project',
+		  "Priority_Project": 1,
+		  "startDate": "10/10/2010",
+		  "endDate": "11/11/2011",
+		  "Project": 'prject',
+		  "priority": 10,
+		  "taskCount":10,
+		  "taskCompleted":5,
+		  "managerId": 10,
+		  "managerName":"User Name",
+		  "selectedManager": "Manager",
+		  "selectedManagerId":10,
+		  "isActive":0
+	  };
+	   component.myProjectForm.setValue(project);
+	  try{
+		component.onProjectSubmit();
+	   }catch(e){};
+		expect(service).toBeTruthy();
+  })));
+  
+  it('Edit Task', inject([CommonServiceService], (service: CommonServiceService) => {
+	  let proj={
+			    "Project":"test",
+				"project":"test",
+				"Priority_Project":"Test",
+				"priority":2,
+				"selectedManagerId":2,
+				"managerId":10,
+				"selectedManager":"manager",
+				"managerName":"pname",
+				"startDate":"10/10/2010",
+				"endDate":"11/11/2011",
+				"projectId":5,
+				"taskCount":10,
+				"taskCompleted":10,
+				"isActive":10
+			  };
+		component.EditProject(proj);
+		try{
+			component.SuspendProject(proj);
+		}catch(e){};
+		expect(service).toBeTruthy();
+  }));
+  it('Reset Project', inject([CommonServiceService], (service: CommonServiceService) => {
+	  	component.ResetProject();
+		expect(service).toBeTruthy();
+  }));
+  
+  it('Submit Task', inject([CommonServiceService], (service: CommonServiceService) => {
+	  try{
+	  	component.onSubmit();
+	  }catch(e){};
+	  component.parentCheck=true;
+	  try{
+	  	component.onSubmit();
+	  }catch(e){};
+	  component.myForm.value.task="test";
+	  try{
+	  	component.onSubmit();
+	  }catch(e){};
+	  let formData={
+		   "taskId": 1,
+			"task": "Test",
+			"priority": 10,
+			"parentId":10,
+			"parentTask": "Parrent",
+			"startDate": "10/10/2010",
+			"endDate": "11/11/2009",
+			"projectId": 0,
+			"status": 0,
+			"parent":'Test parrent",									t',
+			"userName":'Name',
+			"userId": 1,
+			"selectedProject": 12,
+			"selectedProjectId":12,
+			"selectedParentTask": "Parrent",
+			"selectedParentTaskId":10,
+			"selectedUser": "user",
+			"selectedUserId":1,
+			"projectName": "Project Name"
+	  };
+	  component.myForm.setValue(formData);
+	  try{
+	  	component.onSubmit();
+	  }catch(e){};
+	  formData={
+		   "taskId": 1,
+			"task": "Test",
+			"priority": 10,
+			"parentId":10,
+			"parentTask": "Parrent",
+			"startDate": "10/10/2010",
+			"endDate": "11/11/2019",
+			"projectId": 0,
+			"status": 0,
+			"parent":'Test parrent",									t',
+			"userName":'Name',
+			"userId": 1,
+			"selectedProject": 12,
+			"selectedProjectId":12,
+			"selectedParentTask": "Parrent",
+			"selectedParentTaskId":10,
+			"selectedUser": "user",
+			"selectedUserId":1,
+			"projectName": "Project Name"
+		};
+	  component.myForm.setValue(formData);
+	  try{
+	  	component.onSubmit();
+	  }catch(e){};
+	   expect(service).toBeTruthy();
+  }));
+  it('Edit task', inject([CommonServiceService], (service: CommonServiceService) => {
+	  let task={
+			  "projectId": "1",
+			  "taskId": "1",
+			  "project": "Project Name1",
+			  "parentdD": 2,
+			  "parentTask": "Cognizant",
+			  "task": "Test 1",
+			  "startDate": "09/07/2018",
+			  "endDate": "09/08/2018",
+			  "priority": 4,
+			  "managerId": 123,
+			  "projStatus": "Completed",
+			  "status": 0,
+			  "userId": 4   
+			  };
+		try{	  
+			component.EditTask(task);	
+		}catch(e){};		
+		expect(service).toBeTruthy();
+  }));
+  it('should have Add User', inject([CommonServiceService], (service: CommonServiceService) => {
+	  let user={
+			"firstName": "Fname",
+			"lastName": "Lname",
+			"userId": 1,
+			"employeeId": 1,
+			"projectId": 1,
+			"taskId": 1
+			};
+			component.addUserForm.setValue(user);
+		try{	  
+			component.AddUserSubmit();	
+		}catch(e){};
+		try{	  
+			component.DeleteUser(user);	
+		}catch(e){};
+		try{	  
+			component.ConfirmDeleteUser();	
+		}catch(e){};	
+		component.AddUserResetTask();		
+		expect(service).toBeTruthy();
+  }));
+  it('Compare start and end Date', inject([CommonServiceService], (service: CommonServiceService) => {
+	  let dates={
+			"endDate":'' ,
+			};
+			component.compareTwoDates(dates);	
+		expect(service).toBeTruthy();
+  }));
+  it('Application Menu ', inject([CommonServiceService], (service: CommonServiceService) => {
+		component.AddProject();
+		component.AddTask();
+		component.AddUser();
+		component.ViewTask();
+		component.onFilterChange();
+		component.sort('key');
+		component.onParentCheck();
+		component.sortProject('projectkey');
+		component.sortUser('userkey');
+		component.sortTask('taskkey');
+		component.selectedManagerClick('managerName');
+		component.selectedPrijectClick('project');
+		component.selectedParentTaskClick('task');
+		component.selectedUserClick('user');
+		expect(service).toBeTruthy();
+  }));
+  it('Search values ', inject([CommonServiceService], (service: CommonServiceService) => {	
+		try{
+			component.ManagerSearch();
+		}catch(e){};
+		try{
+			component.ProjectSearch();
+		}catch(e){};
+		try{
+			component.ParentSearch();
+		}catch(e){};
+		try{
+			component.UserSearch();
+		}catch(e){};
+		try{
+			component.SearchTaskProject();
+		}catch(e){};
+		expect(service).toBeTruthy();
+  }));
 });
