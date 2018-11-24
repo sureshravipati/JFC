@@ -164,7 +164,16 @@ public class SpringBootWebApplicationTest {
 	}
 	
 	@Test
-	public void O_AddTaskNagative() throws Exception {
+	public void O_AddTaskNegative() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.post("/TaskManager/UpdateEndTask")
+				 .contentType(MediaType.APPLICATION_JSON)
+			      .content("{\"taskId\":null,\"parentId\":1,\"task\":\"Child Task\",\"startDate\":\"2018-11-01\",\"endDate\":\"2018-11-23\",\"priority\":24,\"projectId\":10,\"userId\":1,\"status\":0}")
+				.accept(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$").isNotEmpty()).andDo(print());
+	}
+	
+	@Test
+	public void P_EndTaskNegative() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/TaskManager/SubmitTaskDetail")
 				 .contentType(MediaType.APPLICATION_JSON)
 			      .content("{\"taskId\":null,\"parentId\":1,\"task\":\"Child Task\",\"startDate\":\"2018-11-01\",\"endDate\":\"2018-11-23\",\"priority\":24,\"projectId\":10,\"userId\":1,\"status\":0}")
@@ -172,4 +181,30 @@ public class SpringBootWebApplicationTest {
 			.andExpect(jsonPath("$").isNotEmpty()).andDo(print());
 	}
 	
+	@Test
+	public void Q_DeleteUserNegative() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.post("/User/DeleteUserDetail")
+				 .contentType(MediaType.APPLICATION_JSON)
+			      .content("{\"firstName\":\"First Name\",\"lastName\":\"Last Name\",\"userId\":-1,\"employeeId\":\"5555\",\"projectId\":\"\",\"taskId\":\"\"}")
+				.accept(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$").exists()).andDo(print());
+	}
+	
+	@Test
+	public void R_SuspendProjectNegative() throws Exception {		
+		mockMvc.perform(MockMvcRequestBuilders.post("/Project/SuspendProjectDetail")
+				 .contentType(MediaType.APPLICATION_JSON)
+			      .content("{\"projectId\":-1,\"project\":\"Project\",\"startDate\":\"2018-11-01\",\"endDate\":\"2018-11-30\",\"priority\":15,\"managerId\":1}")
+				.accept(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$").exists()).andDo(print());
+	}
+	
+	@Test
+	public void S_UpdateProjectNegative() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.post("/Project/SubmitProjectDetail")
+				 .contentType(MediaType.APPLICATION_JSON)
+			      .content("{\"projectId\":-2,\"project\":\"Project\",\"startDate\":\"2018-11-01\",\"endDate\":\"2018-11-30\",\"priority\":15,\"managerId\":5}")
+				.accept(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$").exists()).andDo(print());
+	}
 }

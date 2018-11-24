@@ -2,7 +2,7 @@ import { Component, NgModule, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
-var vURL = "http://localhost:8080";
+var vURL = "http://localhost:7080/pmapi";
 
 const httpOptions = {
   headers: new HttpHeaders({

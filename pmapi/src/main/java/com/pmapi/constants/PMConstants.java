@@ -9,7 +9,7 @@ public interface PMConstants {
 	static String INVALID_ACTION_ERROR_MESSAGE = "Invalid action";
 	static int STATUS_400 = 400;	
 	static String YYYY_MM_DD = "yyyy-MM-dd";
-	static String COMPLETED="completed";
+	static String COMPLETED="1";
 	static String SUCCESS="Success";
 	static String ENDTASK="1";
 	static String PROJECT_ID="project.projectId";
