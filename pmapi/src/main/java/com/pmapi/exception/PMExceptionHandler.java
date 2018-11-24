@@ -1,8 +1,6 @@
 package com.pmapi.exception;
 
 
-import java.lang.reflect.UndeclaredThrowableException;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,21 +23,6 @@ public class PMExceptionHandler implements PMConstants
 		{
 			response.setStatus(((PMException) ex).getStatus());
 			return ((PMException) ex).transformException();
-		}
-		else if (ex instanceof UndeclaredThrowableException)
-		{
-			UndeclaredThrowableException unEx = (UndeclaredThrowableException) ex;
-			if (unEx.getUndeclaredThrowable() instanceof PMException)
-			{
-				PMException excep = (PMException) unEx.getUndeclaredThrowable();
-				response.setStatus(excep.getStatus());
-				return excep.transformException();
-			}
-			else
-			{
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				return returnRestError();
-			}
 		}
 		else
 		{
