@@ -3,8 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
-};
+  production: false,
+  serverHost: "localhost",
+  serverPort: 7080,
+  appcontextpath: "pmapi"
 
 /*
  * In development mode, for easier debugging, you can ignore zone related error
